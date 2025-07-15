@@ -2,10 +2,10 @@ import bcrypt
 import mysql.connector
 
 #new user
-username = input("Enter your username:")
-pw = input("Enter your password")
+#username = input("Enter your username:")
+#pw = input("Enter your password")
 
-def create_user(username, password):
+def create_user(username, password, first_name, last_name):
     hashed = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
     password_hash = hashed.decode()
     conn = mysql.connector.connect(
@@ -21,8 +21,8 @@ def create_user(username, password):
     result = cursor.fetchone()
     if result[0] != 0:
         return "user already exists"
-    sql = "INSERT INTO users (username, password_hash) VALUES (%s, %s)"
-    val = (username, password_hash)
+    sql = "INSERT INTO users (username, password_hash, first_name, last_name) VALUES (%s, %s, %s, %s)"
+    val = (username, password_hash, first_name, last_name)
     cursor.execute(sql, val)
     conn.commit()
     cursor.close()
@@ -33,25 +33,25 @@ def create_user(username, password):
 
 def validate_login(user_name, password):
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = "starlight_inventory"
+        host="localhost",
+        user="root",
+        password="Rajahmundry",
+        database="starlight_inventory"
     )
-    cursor = conn.cursor()
-    sql = "SELECT password_hash FROM users WHERE username = %s"
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT password_hash, first_name, last_name FROM users WHERE username = %s"
     cursor.execute(sql, (user_name,))
     result = cursor.fetchone()
     if result is None:
-        print("invalid")
-        return
-    conn.commit()
-    cursor.close()
-    conn.close()
-    stored_hash = result[0]
+        return "invalid"
+    stored_hash = result["password_hash"]
     if bcrypt.checkpw(password.encode(), stored_hash.encode()):
-        print("valid")
+        return {
+            "first_name": result["first_name"],
+            "last_name": result["last_name"]
+        }
     else:
-        print("invalid")
+        return "invalid"
 
-validate_login(username, pw)
+    
+#validate_login(username, pw)

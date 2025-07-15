@@ -1,0 +1,12 @@
+.flex-box-implant{
+    display: flex;
+    flex-direction: column;
+}
+
+.flex-item-implant{
+    background-color: #BDC1C3;
+    color: #173D62;
+    font-size: 5rem;
+    margin: 2rem;
+    margin-left: 40rem;
+}

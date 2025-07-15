@@ -1,23 +1,47 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import Dashboard from './Dashboard'
+import FlowRestrictorBOM from './FlowRestrictorBOM'
+import ImplantInventory from './ImplantInventory'
+import ImplantInventoryView from './ImplantInventoryView'
+import ImplantInventoryInsert from './ImplantInventoryInsert'
+import ImplantInventoryDelete from './ImplantInventoryDelete'
+import StentBOM from './StentBOM'
+import Login from './Login'
+import SignUp from './SignUp'
+import Dashboard2 from './Dashboard2'
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom'
+import EditPermissions from './EditPermissions'
+import AddUser from './AddUser'
+import UpdatePermissions from './UpdatePermissions'
+import StentBOMGView from './StentBOMGView'
+import StentBOMTView from './StentBOMTView'
+import StentBOMBuild from './StentBOMBuild'
+import KitDetailPage from './KitDetailPage'
+import KitBuild from './KitBuild'
 
 function App() {
-  const [count, setCount] = useState(0)
-
   return (
-    <>
-      <div className='heading-container'>
-        <h1 className='heading'>Database Management System</h1>
-        <h2 className='heading sub-heading'>Starlight Cardiovascular</h2>
-      </div>  
-      <div className='authentication'>
-        <h1 className='heading-auth'>User Login</h1>
-        <input type="text" placeholder="Enter Username" value={username} onChange={(e)=> setUsername(e.target.value)} className='sub-heading-auth'>Username</input>
-        <input className='sub-heading-auth'>Password</input>
-      </div>
-    </>
+    <Router>
+      <Routes>
+        <Route path='/' element={<Login />}/>
+        <Route path='/dashboard' element={<Dashboard />}/>
+        <Route path='/implant-inventory' element={<ImplantInventory />}/>
+        <Route path='/stent-bom' element={<StentBOM />}/>
+        <Route path='/flow-restrictor-bom' element={<FlowRestrictorBOM />}/>
+        <Route path='/implant-inventory-view' element={<ImplantInventoryView/>}/>
+        <Route path='/implant-inventory-insert' element={<ImplantInventoryInsert/>}/>
+        <Route path='/implant-inventory-delete' element={<ImplantInventoryDelete/>}/>
+        <Route path='/signup' element={<SignUp/>}/>
+        <Route path='/dashboard2' element={<Dashboard2/>}/>
+        <Route path='/edit-permissions' element={<EditPermissions/>}/>
+        <Route path='/add-user' element={<AddUser/>}/>
+        <Route path='/update-permissions' element={<UpdatePermissions/>}/>
+        <Route path='/stent-bom-graph-view' element={<StentBOMGView/>}/>
+        <Route path='/stent-bom-table-view' element={<StentBOMTView/>}/>
+        <Route path='/stent-bom-build' element={<StentBOMBuild/>}/>
+        <Route path="/kits" element={<KitDetailPage />} />
+        <Route path='/kit-build' element={<KitBuild/>}/>
+      </Routes>
+    </Router>
   )
 }
 
