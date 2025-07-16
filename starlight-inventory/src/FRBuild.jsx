@@ -2,20 +2,43 @@ import { useNavigate } from "react-router-dom";
 import {useState, useEffect} from "react"
 import './Dashboard.css'
 
-function StentBOMBuild(){
+function FRBuild(){
   const [selectedKitIds, setSelectedKitIds] = useState([]);
   const [kitsData, setKitsData] = useState([]);
   const availableKits = [
-    { id: 0, name: "Sterilized Starlight Stent Systems DDPC32" },
-    { id: 2, name: "Unsterilized Starlight Stent Systems DDPC32" },
-    { id: 4, name: "Packaged Starlight Stent System DDPC32" },
+    { id: 1, name: "Final Product, Flow Restrictor (Diameter), Pusher Tube Delivery System, Sterilized Starlight Stent Systems DDPC32" },
+    { id: 3, name: "Final Packaging, Flow Restrictor, Pusher Tube Delivery System Unsterilized" },
+    { id: 4, name: "Packaging, Pusher Tube Delivery System, (Diameter)" },
     //{ id: 6, name: "Lifeline Stent Shelf Carton & Pouch Label" },
-    { id: 13, name: "Starlight Stent System DDPC32" },
-    //{ id: 16, name: "Stent DDPC32" },
-    { id: 25, name: "Uncoated Pusher Tube DDPC32" },
-    { id: 37, name: "Uncoated Catheter DDPC32" },
-    { id: 44, name: "Distal Catheter DDPC32" },
-    { id: 45, name: "Catheter Braid" },
+    { id: 9, name: "Final Assembly, Pusher Tube Flow Restrictor System, (Diameter)" },
+    { id: 11, name: "Peel Away Transfer Sheath" },
+    { id: 13, name: "Unflared Transfer Sheath" },
+    { id: 15, name: "Tuba Complex" },
+    { id: 21, name: "Assembly, Flow Restrictor, Covered (Diameter), Coated" },
+    { id: 23, name: "Assembly, Flow Restrictor, Covered (Diameter)" },
+    { id: 25, name: "Assembly, Flow Restrictor, Uncovered (Diameter)" },
+    { id: 27, name: "Flow Restrictor, (Diameter)" },
+    { id: 30, name: "Assembly Pusher Tube, Coated" },
+    { id: 31, name: "Assembly Pusher Tube, Uncoated" },
+    { id: 33, name: "End Effector" },
+    { id: 35, name: "Retainment Adapter" },
+    { id: 37, name: "Proximal LCT" },
+    { id: 43, name: "Assembly, Mid-Shaft, Coated" },
+    { id: 44, name: "Assembly, Mid-Shaft" },
+    { id: 46, name: "Shaft Body Assembly" },
+    { id: 52, name: "Final Packaging, Braided Catheter, Unsterilized" },
+    { id: 54, name: "Catheter Packaging Hoop" },
+    { id: 55, name: "Assembly, Braided Catheter, Coated" },
+    { id: 57, name: "Assembly, Catheter, pre-Coated" },
+    { id: 63, name: "Distal Catheter" },
+    { id: 71, name: "Final Packaging, LCHT Catheter, Unsterilized" },
+    { id: 72, name: "Catheter Packaging Serilization Bag" },
+    { id: 73, name: "Catheter Packaging Hoop" },
+    { id: 74, name: "Assembly, 055 LCHT Catheter, Coated" },
+    { id: 76, name: "Assembly, 055 LCHT Catheter" },
+    { id: 86, name: "Final Packaging, Dilator, unsterilized" },
+    { id: 88, name: "Dilator Packaging Hoop" },
+    { id: 89, name: "Assembly, Dilator" },
   ];
 
   const toggleKit = (kitId) => {
@@ -31,7 +54,7 @@ function StentBOMBuild(){
     }
 
     const query = selectedKitIds.join(",");
-    fetch(`http://localhost:8000/kits?ids=${query}`)
+    fetch(`http://localhost:8000/frkits?ids=${query}`)
       .then((res) => res.json())
       .then((data) => setKitsData(data));
   }, [selectedKitIds]);
@@ -89,4 +112,4 @@ function StentBOMBuild(){
 
 }
 
-export default StentBOMBuild;
+export default FRBuild;

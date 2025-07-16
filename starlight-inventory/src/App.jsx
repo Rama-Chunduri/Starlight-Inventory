@@ -17,6 +17,10 @@ import StentBOMTView from './StentBOMTView'
 import StentBOMBuild from './StentBOMBuild'
 import KitDetailPage from './KitDetailPage'
 import KitBuild from './KitBuild'
+import FRView from './FRView'
+import FRGView from './FRGView'
+import FRBuild from './FRBuild'
+import StentInvTable from './StentInvTable'
 
 function App() {
   return (
@@ -40,6 +44,10 @@ function App() {
         <Route path='/stent-bom-build' element={<StentBOMBuild/>}/>
         <Route path="/kits" element={<KitDetailPage />} />
         <Route path='/kit-build' element={<KitBuild/>}/>
+        <Route path='/fr-bom-table-view' element={<FRView/>}/>
+        <Route path='/fr-bom-graph-view' element={<FRGView/>}/>
+        <Route path='/fr-bom-build' element={<FRBuild/>}/>
+        <Route path='/stent-inventory-table-view' element={<StentInvTable/>}/>
       </Routes>
     </Router>
   )

@@ -3,15 +3,13 @@ import ForceGraph2D from "react-force-graph-2d";
 
 
 const levelHeights = {
-      Level1: -400,
-      Level2: -300,
-      Level3: -200,
-      Level4: -100,
-      Level5: 0,
-      Level6: 100,
-      Level7: 200,
-      Level8: 300,
-      Level9: 400,
+      Level1: -200,
+      Level2: -100,
+      Level3: 0,
+      Level4: 100,
+      Level5: 200,
+      Level6: 300,
+      Level7: 400
 };
 
 function buildTree(nodes, links) {
@@ -33,62 +31,58 @@ function buildTree(nodes, links) {
     return root;
 }
 
-const StentBOMGView = () => {
+const FRGView = () => {
   const [graphData, setGraphData] = useState({ nodes: [], links: [] });
   const [selectedNode, setSelectedNode] = useState(null);
 
-  useEffect(() => {
+useEffect(() => {
+  const fetchData = async () => {
+    try {
+      const res = await fetch("http://localhost:8000/fr-bom-graph-view");
+      const data = await res.json();
+      console.log("Fetched data:", data);
 
-    const fetchData = async () => {
-      try {
-        fetch("http://localhost:8000/stent-bom-graph-view")
-          .then(res => res.json())
-          .then(data => {
-          const nodes = data.nodes.map(node => ({
+
+      // Defensive checks before mapping
+      const nodes = Array.isArray(data.nodes)
+        ? data.nodes.map(node => ({
             ...node,
-            fx: undefined, // optional: let x float freely
-            fy: levelHeights[node.label] ?? 0, // force y based on level
-          }));
-          setGraphData({
-            nodes: nodes,
-            links: data.links
-          })
-      });
-        // const safeData = {
-        //   nodes: Array.isArray(data.nodes) ? data.nodes : [],
-        //   links: Array.isArray(data.links) ? data.links : [],
-        // };
+            fx: undefined, 
+            fy: levelHeights[node.label] ?? 0,
+          }))
+        : [];
 
-        // setGraphData(safeData);
-      } catch (err) {
-        console.error("Failed to fetch graph data:", err);
-        // Optional: show fallback graph to prevent crash
-        setGraphData({ nodes: [], links: [] });
-      }
-    };
+      const links = Array.isArray(data.links) ? data.links : [];
 
-    fetchData();
-  }, []);
+      setGraphData({ nodes, links });
+    } catch (err) {
+      console.error("Failed to fetch graph data:", err);
+      setGraphData({ nodes: [], links: [] });
+    }
+  };
+
+  fetchData();
+}, []);
+
 
     const labelColors = {
-        Level1: "#1f77b4",   // blue
+        Level1: "#bcbd22",   // yellowgreen
         Level2: "#ff7f0e",   // orange
         Level3: "#2ca02c",   // green
         Level4: "#d62728",   // red
         Level5: "#9467bd",   // purple
         Level6: "#8c564b",   // brown
         Level7: "#e377c2",   // pink
-        Level8: "#7f7f7f",   // gray
-        Level9: "#bcbd22",   // yellow-green
     };
-
     
-
-
     const displayLabels = {
         id: "ID",
         label: "Level",
         description: "Description",
+        number: "Number",
+        owner: "Owner",
+        inspection_instructions: "Inspection Instructions",
+        notes: "notes",
         part_number: "Part Number",
         units: "Units",
         quantity: "Quantity"
@@ -96,11 +90,12 @@ const StentBOMGView = () => {
 
   return (
     <div style={{ height: "100vh", margin: "2rem"}}>
-        <h1>Stent BOM Graph View</h1>
+        <h1>Flow Restrictor BOM Graph View</h1>
       <ForceGraph2D
         graphData={graphData}
         nodeLabel={(node) => `${node.label}: ${node.description}`}
         nodeColor={(node) => {
+        console.log("Node label:", node.label);
         return labelColors[node.label] || "#888888";
     }}
         linkDirectionalArrowLength={6}
@@ -122,7 +117,7 @@ const StentBOMGView = () => {
         }}
         >
         <h3 style={{backgroundColor: "#35F1E3", color:"#173D62"}}>Component Details</h3>
-        {["id", "label", "description", "part_number", "units", "quantity"].map((key)=>(
+        {["id", "label", "description", "number", "owner", "inspection_instructions", "notes", "part_number","units", "quantity"].map((key)=>(
              selectedNode[key] !== undefined && (
                 <div key={key} style={{backgroundColor: "#35F1E3", color: "#173D62"}}>
                     <strong style={{backgroundColor: "#35F1E3", color: "#173d62"}}>{displayLabels[key]}:</strong> {String(selectedNode[key])}
@@ -136,5 +131,5 @@ const StentBOMGView = () => {
   );
 };
 
-export default StentBOMGView;
+export default FRGView;
 

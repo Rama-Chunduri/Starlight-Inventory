@@ -2,276 +2,6 @@ import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useState } from "react"
 
-const quantities = [
-    	{name: "Sterilized Starlight Stent Systems DDPC32", low_quantity: 8, 
-            lots: [
-                {name: "lot1", quantity: 5},
-                {name: "lot2", quantity: 3}
-            ]
-        },
-        {name: "DA Stent System Sterilization Cycle Specification", low_quantity: 8, 
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Unsterilized Starlight Stent Systems DDPC32", low_quantity: 8,  lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]},
-        {name: "Starlight Stent System Shipper Box", low_quantity: 8, 
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Packaged Starlight Stent System DDPC32", low_quantity: 8, 
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Shelf Carton", low_quantity: 8,  lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]},
-        {name: "Lifeline Stent Shelf Carton & Pouch Label Printed Static Artwork", low_quantity: 8, 
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Lifeline Stent Instructions For Use", low_quantity: 8, 
-              lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Tyvek Pouch" , low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Hoop Support Card" , low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name:"Starlight Stent System DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Stent Assembly DDPC32", low_quantity:8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Stent Radiopaque Markers DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Stent DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Rotating Hemostatic Valve", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Pusher Tube Hub Housing DDPC32" , low_quantity:8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Pusher Tube Hub Bushing DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Strain Relief DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Coated Pusher Tube DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Uncoated Pusher Tube DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Proximal Lct DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Pusher Tube Liner DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Pusher Tube Distal Outer Extrusion DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Distal LCT DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Pusher Tube Marker Band DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Distal LCT DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Pusher Tube Marker Band DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Retainer DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Pusher Masking Heat Shrink", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "PTFE Coated Pusher Coating Mandrel", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Assembly DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Uncoated Catheter DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Hub", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Strain Relief DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Taper Pebax 25D DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Taper Pebax 72D DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "PTFE Coated Catheter Coating Mandrel", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Distal Catheter DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Braid", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Braid Ribbon", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Fiber DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Pet Shrink DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Liner DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Marker DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        },
-        {name: "Catheter Extrusions DDPC32", low_quantity: 8,
-             lots: [
-                {name: "lot1", quantity: 4},
-                {name: "lot2", quantity: 4}
-            ]
-        }
-]
-
-
 
 function StentBOMTView(){
     const [data, setData] = useState([])
@@ -293,14 +23,14 @@ function StentBOMTView(){
                 setData(result)
             }
             catch(error){
-                console.error("Error fetching the implant inventory", error)
+                console.error("Error fetching the stent bom", error)
             }
         }
         fetchData()
     }, [])
 
     const handleCellClick = (e, rowIdx, colKey) => {
-        //if(colKey === "quantity") return;
+        //if(colKey === "quantity") return;     remove comment later
         e.stopPropagation()
         const rect = e.target.getBoundingClientRect()
         setDropdownPos({rowIdx, colKey, x:rect.right, y:rect.bottom})
@@ -329,9 +59,11 @@ function StentBOMTView(){
     setDropdownPos(null);
   };
 
-    const lowQuantityComponents = data
-        .filter(row => parseInt(row.quantity) < quantities[row.description])
-        .map(row => row.description); 
+    const handleLotQuantityChange = (lotIndex, newQuantity) => {
+        const updatedLots = [...editableLots];
+        updatedLots[lotIndex].quantity = newQuantity;
+        setEditableLots(updatedLots);
+    };
 
     const handleEditClick = () => {
         if (!dropdownPos) return;
@@ -376,7 +108,7 @@ function StentBOMTView(){
         return () => window.removeEventListener("click", handleClickOutside)
     }, [])
 
-    if (data.length === 0) return <div>Loading...</div>;
+    if (data.length === 0) return <div style={{marginLeft: "30rem", size: "3rem"}}>Loading...</div>;
     const columns = Object.keys(data[0]);
     
     return (
@@ -492,74 +224,61 @@ function StentBOMTView(){
                             <h1 style={{backgroundColor: "pink", fontSize: "2rem"}}>Lot Information:</h1>
                             <h2 style={{backgroundColor: "pink", fontSize: "1.2rem"}}>Quantity</h2>
                             <ul style={{ backgroundColor: "pink", fontSize: "1.2rem" }}>
-                                {quantities
-                                .filter(component => component.name === selectedRow.description)
-                                .flatMap(component =>
-                                component.lots.map((lot, i) => (
-                                <li key={i} style={{ backgroundColor: "pink", fontSize: "1.2rem" }}>
-                                    {lot.name}:{' '}
-                                    {editingLotIndex === i ? (
-                                    <>
+                                {editableLots.map((lot, i) => (
+                                    <li key={i} style={{ backgroundColor: "pink", fontSize: "1.2rem" }}>
+                                        {lot.name}:{' '}
+                                        {editingLotIndex === i ? (
                                         <input
-                                            type="number"
+                                            style={{ backgroundColor: "pink", fontSize: "1.2rem", width: "60px" }}
+                                            type="text"
                                             value={editingLotValue}
                                             onChange={(e) => setEditingLotValue(e.target.value)}
                                             onKeyDown={(e) => {
-                                            if (e.key === "Enter") {
-                                                const updatedLots = [...editableLots];
-                                                updatedLots[i].quantity = parseInt(editingLotValue) || 0;
-                                                setEditableLots(updatedLots);
+                                                if (e.key === "Enter") {
+                                                    const num = parseInt(editingLotValue, 10);
+                                                    if (!isNaN(num)) {
+                                                        handleLotQuantityChange(i, num);
+                                                        setQuantity(prev =>
+                                                        prev.map(component => {
+                                                        if (component.name === selectedRow.description) {
+                                                            const updatedLots = [...component.lots];
+                                                            updatedLots[i].quantity = num;
+                                                            return { ...component, lots: updatedLots };
+                                                        }
+                                                        return component;
+                                                        })
+                                                        );
+                                                    }
                                                 setEditingLotIndex(null);
+                                                setEditingLotValue("");
                                             }
-                                            if (e.key === "Escape") {
-                                                setEditingLotIndex(null);
-                                            }
+
+                                                if (e.key === "Escape") {
+                                                    setEditingLotIndex(null);
+                                                    setEditingLotValue(""); // optional
+                                                }
                                             }}
                                             autoFocus
-                                            style={{ width: "60px" }}
                                         />
-                                    </>
-                                    ) : (
+                                        ) : (
                                         <span
-                                            style={{ cursor: "pointer" }}
+                                            style={{ backgroundColor: "pink", fontSize: "1.2rem", cursor: "pointer" }}
                                             onClick={() => {
                                                 setEditingLotIndex(i);
-                                                setEditingLotValue(lot.quantity.toString());
+                                                setEditingLotValue(String(lot.quantity)); // preload the input with current quantity
                                             }}
                                         >
                                             {lot.quantity}
                                         </span>
-                                        )}
+                                    )}
                                 </li>
-
-                            ))
-                            )}
+                            ))}
                             </ul>
                             <button style={{margin: "0.2rem"}}>Add Lot</button>
                             <button style={{margin: "0.2rem"}}>Delete Lot</button>
 
                         </div>
             )}
-            {!rowInfo && (<div
-                style={{
-                        backgroundColor: "pink",
-                        position: "absolute", 
-                        top: 40, 
-                        right: -700, 
-                        padding: "1rem", 
-                        color: "#173D62",
-                        borderRadius: "8px"
-
-            }}>
-                <h1 style={{color: "#173D62", backgroundColor: "pink", fontSize: "2rem"}}>Low Inventory Components</h1>
-                {
-                    <ul style={{backgroundColor: "pink"}}>
-                    {lowQuantityComponents.map((name, index) => (
-                        <li key={index} style={{backgroundColor: "pink"}}>{name}</li>
-                    ))}
-                    </ul>
-                }
-            </div>)}
         </div>
     )
 }

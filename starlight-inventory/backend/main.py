@@ -64,6 +64,22 @@ def get_implant_inventory():
     conn.close()
     return rows
 
+@app.get("/fr-table-view")
+def get_fr_table():
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry",
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM frbom"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
 @app.get("/update-permissions")
 def get_user_table():
     conn = mysql.connector.connect(
@@ -96,9 +112,25 @@ def get_user_table():
     conn.close()
     return rows
 
+@app.get("/stent-inventory-table-view")
+def get_stent_inventory():
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry", 
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM stent_inventory"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
 driver = GraphDatabase.driver(
     "bolt://localhost:7687",
-    auth=("neo4j", "StarlightInventory123!!")  # <-- replace with yours
+    auth=("neo4j", "StarlightInventory123!!") 
 )
 
 @app.get("/stent-bom-graph-view")
@@ -129,7 +161,81 @@ def get_graph():
     except Exception as e:
         print("INTERNAL SERVER ERROR:", e)
         return {"error": str(e)}
+
+dr = GraphDatabase.driver(
+    "bolt://localhost:7687",
+    auth=("neo4j", "StarlightInventory123!!") 
+)
     
+@app.get("/fr-bom-graph-view")
+def get_graph_fr():
+    try:
+        with dr.session(database="flowrestrictorbom") as session:
+            result = session.run("MATCH (parent)-[r:SUB_COMPONENT_OF]->(child) RETURN parent, r, child LIMIT 100")
+            nodes = {}
+            links = []
+            for record in result:
+                for node in [record["parent"], record["child"]]:
+                    if node.id not in nodes:
+                        nodes[node.id] = {
+                            "id": str(node.id),
+                            "label": list(node.labels)[0],
+                            "description": node.get("description", ""),
+                            "number": str(node.get("number")),
+                            "owner": str(node.get("owner")),
+                            "inspection_instructions": str(node.get("inspection_instructions")),
+                            "notes": str(node.get("notes")),
+                            "part_number": str(node.get("part_number")),
+                            "units": str(node.get("units")),
+                            "quantity": str(node.get("quantity")) 
+                        }
+                rel = record["r"]
+                links.append({
+                    "source": str(rel.start_node.id),  # parent
+                    "target": str(rel.end_node.id),    # child
+                    "type": rel.type
+                })
+        return {"nodes": list(nodes.values()), "links": links}
+    except Exception as e:
+        import traceback
+        traceback.print_exc()  # prints the full error stack trace to your server logs
+        return {"error": str(e)}
+
+@app.get('/frkits')
+def get_fr_kit_builds(request: Request):
+    ids_param = request.query_params.get("ids")
+    if not ids_param:
+        return {"error": "No ids provided"}
+    ids = [int(x.strip()) for x in ids_param.split(',')]
+    
+    kits = []
+    with dr.session(database="flowrestrictorbom") as session:
+        result = session.run("""
+            MATCH (kit)
+            WHERE id(kit) IN $node_ids
+            OPTIONAL MATCH (comp)-[:SUB_COMPONENT_OF]->(kit)
+            RETURN kit, collect(DISTINCT comp) AS components
+        """, {"node_ids": ids})
+
+        for record in result:
+            kit_node = record["kit"]
+            comp_nodes = record["components"]
+            kit = {
+                "id": kit_node.get("id", str(kit_node.id)),
+                "name": kit_node.get("description", "Unnamed kit"),
+                "components": []
+            }
+            for comp in comp_nodes:
+                kit["components"].append({
+                    "part_number": comp.get("part_number", ""),
+                    "description": comp.get("description", ""),
+                    "quantity": comp.get("quantity", 1),
+                    "units": comp.get("units", 1)
+                })
+            kits.append(kit)
+
+    return kits
+
 @app.get('/kits')
 def get_kit_builds(request: Request):
     ids_param = request.query_params.get("ids")
@@ -255,6 +361,58 @@ def update_implant_inventory(item: dict=Body(...)):
     conn.close()
     return {"status" : "success", "updated_id": unique_id}
 
+@app.put("/stent-inventory-update")
+def update_stent_inventory(item: dict=Body(...)):
+    unique_id = item.get("unique_id")
+    if not unique_id:
+        return {"error" : "unique_id is required"}
+    update_fields = {k: v for k, v in item.items() if k != "unique_id"}
+    if not update_fields:
+        return {"error": "No fields to update"}
+    
+    set_clause = ",".join([f"{key} = %s" for key in update_fields])
+    values = list(update_fields.values()) + [unique_id]
+
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry",
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = f"UPDATE stent_inventory SET {set_clause} WHERE unique_id = %s"
+    cursor.execute(sql, values)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status" : "success", "updated_id": unique_id}
+
+@app.put("/fr-update")
+def update_implant_inventory(item: dict=Body(...)):
+    unique_id = item.get("unique_id")
+    if not unique_id:
+        return {"error" : "unique_id is required"}
+    update_fields = {k: v for k, v in item.items() if k != "unique_id"}
+    if not update_fields:
+        return {"error": "No fields to update"}
+    
+    set_clause = ",".join([f"{key} = %s" for key in update_fields])
+    values = list(update_fields.values()) + [unique_id]
+
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry",
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = f"UPDATE frbom SET {set_clause} WHERE unique_id = %s"
+    cursor.execute(sql, values)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status" : "success", "updated_id": unique_id}
+
 @app.delete("/implant-inventory-delete-row")
 def delete_row_implant_inventory(item: dict=Body(...)):
     unique_id = item.get("unique_id")
@@ -269,6 +427,26 @@ def delete_row_implant_inventory(item: dict=Body(...)):
     )
     cursor = conn.cursor(dictionary=True)
     sql = f"DELETE FROM implant_inventory WHERE unique_id = %s"
+    cursor.execute(sql, (unique_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status" : "success", "updated_id": unique_id}
+
+@app.delete("/fr-delete-row")
+def delete_row_implant_inventory(item: dict=Body(...)):
+    unique_id = item.get("unique_id")
+    if not unique_id:
+        return {"error" : "unique_id is required"}
+
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry",
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = f"DELETE FROM frbom WHERE unique_id = %s"
     cursor.execute(sql, (unique_id,))
     conn.commit()
     cursor.close()
