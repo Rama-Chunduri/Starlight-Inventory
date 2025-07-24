@@ -11,6 +11,7 @@ from fastapi import Request
 import pandas as pd
 from io import StringIO
 from fastapi import Body
+import json
 
 class LoginRequest(BaseModel):
     username: str
@@ -63,6 +64,7 @@ def get_implant_inventory():
     cursor.close()
     conn.close()
     return rows
+
 
 @app.get("/fr-table-view")
 def get_fr_table():
@@ -128,6 +130,27 @@ def get_stent_inventory():
     conn.close()
     return rows
 
+@app.get("/stent-lots-table-view")
+def get_stent_lots(rejectState: str = Query("all")):
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry", 
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    if rejectState == "accept":
+        sql = "SELECT * FROM stent_lot_management_table WHERE acceptance = 'accept' "
+    elif rejectState == "reject":
+        sql = "SELECT * FROM stent_lot_management_table WHERE acceptance = 'reject' "
+    else:
+        sql = "SELECT * FROM stent_lot_management_table"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
 driver = GraphDatabase.driver(
     "bolt://localhost:7687",
     auth=("neo4j", "StarlightInventory123!!") 
@@ -161,6 +184,8 @@ def get_graph():
     except Exception as e:
         print("INTERNAL SERVER ERROR:", e)
         return {"error": str(e)}
+    
+
 
 dr = GraphDatabase.driver(
     "bolt://localhost:7687",
@@ -291,8 +316,105 @@ async def add_data_to_database(formData: dict=Body(...)):
     conn.close()
     return {"status": "success"}
 
-@app.post('/add-csv')
+@app.post('/add-data-lots')
+async def add_data_to_database(formData: dict=Body(...)):
+    print("Received formData keys:", list(formData.keys()))
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry", 
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    columns = ','.join(formData.keys())
+    placeholders = ','.join(['%s'] * len(formData))
+    values = tuple(formData.values())
+    sql = f"""INSERT INTO stent_lot_management_table ({columns}) VALUES ({placeholders})"""
+    cursor.execute(sql, values)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status": "success"}
+
+@app.post("/add-csv")
 async def add_csv_to_database(request: Request):
+    data = await request.json()
+    csv_text = data['csv']
+    df = pd.read_csv(StringIO(csv_text), dtype=str)
+
+    # Convert mass_loss to numeric (coerce errors to NaN)
+    df['numerical_dimension'] = pd.to_numeric(df.get('numerical_dimension'), errors='coerce')
+
+    expected_cols = [
+        "label", "serial_number", "design", "size", "notes", "restriction_size",
+        "test_allocation", "coating_lot", "ePTFE_Vendor_Lot", "surface_area",
+        "revision", "lot_name", "flared", "feature_label", "mass_loss"
+    ]
+    for col in expected_cols:
+        if col not in df.columns:
+            df[col] = None
+
+    # Drop rows missing critical fields only
+    df_clean = df.dropna(subset=["serial_number", "feature_label", "mass_loss"]).copy()
+    df_clean["numerical_dimension"] = pd.to_numeric(df_clean["numerical_dimension"], errors="coerce")
+
+    index_cols = [
+        "label", "serial_number", "design", "size", "notes", "restriction_size",
+        "test_allocation", "coating_lot", "ePTFE_Vendor_Lot", "surface_area",
+        "revision", "lot_name", "flared", "mass_loss"
+    ]
+
+    pivoted = df_clean.pivot_table(
+    index=index_cols,
+    columns="feature_label",
+    values="numerical_dimension",
+    aggfunc="mean",  # handles multiple rows with same serial_number + feature_label
+        ).reset_index()
+
+    # Flatten MultiIndex columns if needed
+    pivoted.columns.name = None
+    pivoted.columns = [str(col) for col in pivoted.columns]
+
+
+    # Fill missing values in index columns with empty string to avoid groupby dropping rows
+    for col in index_cols:
+        df_clean[col] = df_clean[col].fillna('')
+
+    grouped = df_clean.groupby(index_cols + ["feature_label"])["numerical_dimension"].mean()
+    pivot = grouped.unstack("feature_label").reset_index()
+
+    pivot = pivot.where(pd.notnull(pivot), None)
+
+    print("Pivoted DataFrame:")
+    print(pivot.head())
+    print("printing")
+    print(pivot["SW1"])
+
+
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Rajahmundry",
+        database="starlight_inventory"
+    )
+    cursor = conn.cursor()
+
+    cols = list(pivot.columns)
+    placeholders = ", ".join(["%s"] * len(cols))
+    col_names = ", ".join(cols)
+
+    insert_sql = f"INSERT INTO implant_inventory ({col_names}) VALUES ({placeholders})"
+
+    cursor.executemany(insert_sql, pivot.values.tolist())
+    conn.commit()
+
+    cursor.close()
+    conn.close()
+
+    return {"status": "success", "rows": len(pivot)}
+
+@app.post('/add-csv-lots')
+async def add_csv_to_database_lots(request: Request):
     data = await request.json()
     csv_text = data['csv']
     print(csv_text)
@@ -307,7 +429,7 @@ async def add_csv_to_database(request: Request):
     columnns = ','.join(df.columns)
     placeholders = ','.join(['%s']*len(df.columns))
     cursor = conn.cursor()
-    sql = f"""INSERT INTO implant_inventory (label, serial_number, design, size, notes, restriction_size, test_allocation, coating_lot, ePTFE_Vendor_Lot, surface_area, revision, lot_name, flared) VALUES ({placeholders})"""
+    sql = f"""INSERT INTO stent_lot_management_table (lot_name, quantity, part_number, part_name) VALUES ({placeholders})"""
     
     for index, row in df.iterrows():
         cursor.execute(sql, tuple(row))
@@ -329,7 +451,7 @@ async def delete_from_database(filter: dict = Body(...)):
     where_clause = " AND ".join([f"{key} = %s" for key in filter])
     sql = f"DELETE FROM implant_inventory WHERE {where_clause}"
     cursor = conn.cursor()
-    cursor.execute(sql)
+    cursor.execute(sql, list(filter.values()))
     conn.commit()
     cursor.close()
     conn.close()
@@ -361,8 +483,9 @@ def update_implant_inventory(item: dict=Body(...)):
     conn.close()
     return {"status" : "success", "updated_id": unique_id}
 
-@app.put("/stent-inventory-update")
-def update_stent_inventory(item: dict=Body(...)):
+
+@app.put("/stent-lots-update")
+def update_stent_lots(item: dict=Body(...)):
     unique_id = item.get("unique_id")
     if not unique_id:
         return {"error" : "unique_id is required"}
@@ -380,12 +503,38 @@ def update_stent_inventory(item: dict=Body(...)):
         database = 'starlight_inventory'
     )
     cursor = conn.cursor(dictionary=True)
-    sql = f"UPDATE stent_inventory SET {set_clause} WHERE unique_id = %s"
+    sql = f"UPDATE stent_lot_management_table SET {set_clause} WHERE unique_id = %s"
     cursor.execute(sql, values)
     conn.commit()
     cursor.close()
     conn.close()
     return {"status" : "success", "updated_id": unique_id}
+
+@app.put("/stent-inventory-update")
+def update_stent_inventory(item: dict=Body(...)):
+    id = item.get("id")
+    if not id:
+        return {"error" : "id is required"}
+    update_fields = {k: v for k, v in item.items() if k != "id"}
+    if not update_fields:
+        return {"error": "No fields to update"}
+    
+    set_clause = ",".join([f"{key} = %s" for key in update_fields])
+    values = list(update_fields.values()) + [id]
+
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry",
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = f"UPDATE stent_inventory SET {set_clause} WHERE id = %s"
+    cursor.execute(sql, values)
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status" : "success", "updated_id": id}
 
 @app.put("/fr-update")
 def update_implant_inventory(item: dict=Body(...)):
@@ -427,6 +576,27 @@ def delete_row_implant_inventory(item: dict=Body(...)):
     )
     cursor = conn.cursor(dictionary=True)
     sql = f"DELETE FROM implant_inventory WHERE unique_id = %s"
+    cursor.execute(sql, (unique_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status" : "success", "updated_id": unique_id}
+
+
+@app.delete("/stent-lots-delete-row")
+def delete_row_stent_lots(item: dict=Body(...)):
+    unique_id = item.get("unique_id")
+    if not unique_id:
+        return {"error" : "unique_id is required"}
+
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry",
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = f"DELETE FROM stent_lot_management_table WHERE unique_id = %s"
     cursor.execute(sql, (unique_id,))
     conn.commit()
     cursor.close()
@@ -498,6 +668,81 @@ def delete_row_implant_inventory(item: dict=Body(...)):
     cursor.close()
     conn.close()
     return {"status" : "success", "updated_id": unique_id}
+
+@app.get("/lots")
+def get_lots(part_numbers: List[str] = Query(...)):
+    #print("Received request with:", part_numbers)
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Rajahmundry",
+        database="starlight_inventory"
+    )
+    cursor = conn.cursor(dictionary=True)
+
+    format_strings = ','.join(['%s'] * len(part_numbers))
+    cursor.execute(f"SELECT * FROM stent_lot_management_table WHERE part_number IN ({format_strings})", tuple(part_numbers))
+    rows = cursor.fetchall()
+    
+    cursor.close()
+    conn.close()
+    return rows
+
+@app.get("/preview-inventory")
+def get_parts(ids: str):
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Rajahmundry",
+        database="starlight_inventory"
+    )
+    cursor = conn.cursor(dictionary=True)
+    id_list = [int(i.strip()) for i in ids.split(",")]
+    placeholders = ','.join(['%s'] * len(id_list))
+    query = f"SELECT * FROM stent_lot_management_table WHERE unique_id IN ({placeholders})"
+    cursor.execute(query, id_list)
+    rows = cursor.fetchall()
+    return [{"id": row["unique_id"], "part_name": row["part_name"], "quantity": row["quantity"]} for row in rows]
+
+@app.post("/update-quantities") #confirming the preview inventory
+def update_quantities(updates: List[dict]):
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Rajahmundry",
+        database="starlight_inventory"
+    )
+    cursor = conn.cursor(dictionary=True)
+    for update in updates:
+        cursor.execute("UPDATE stent_lot_management_table SET quantity = %s WHERE id = %s", (update["new_quantity"], update["id"]))
+    conn.commit()
+    return {"status": "success"}
+
+class UpdateLotItem(BaseModel):
+    unique_id: int
+    updated_quantity: int
+    
+@app.post("/update-lots")
+def update_lots(items: List[UpdateLotItem]):
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Rajahmundry",
+        database="starlight_inventory"
+    )
+    cursor = conn.cursor()
+
+    for item in items:
+        cursor.execute(
+            "UPDATE stent_lot_management_table SET quantity = %s WHERE unique_id = %s",
+            (item.updated_quantity, item.unique_id)
+        )
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+
+    return {"status": "success", "updated": len(items)}
 
 if __name__ == "__main__":
     import uvicorn

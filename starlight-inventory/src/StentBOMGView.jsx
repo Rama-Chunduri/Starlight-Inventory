@@ -40,32 +40,46 @@ const StentBOMGView = () => {
   useEffect(() => {
 
     const fetchData = async () => {
-      try {
-        fetch("http://localhost:8000/stent-bom-graph-view")
-          .then(res => res.json())
-          .then(data => {
-          const nodes = data.nodes.map(node => ({
-            ...node,
-            fx: undefined, // optional: let x float freely
-            fy: levelHeights[node.label] ?? 0, // force y based on level
-          }));
-          setGraphData({
-            nodes: nodes,
-            links: data.links
-          })
-      });
+  try {
+    const res = await fetch("http://localhost:8000/stent-bom-graph-view");
+    const data = await res.json();
+
+    // Group nodes by label (level)
+    const nodesByLevel = {};
+    data.nodes.forEach((node) => {
+      if (!nodesByLevel[node.label]) nodesByLevel[node.label] = [];
+      nodesByLevel[node.label].push(node);
+    });
+
+    const spacing = 30; // horizontal spacing between nodes
+
+    const nodes = data.nodes.map((node) => {
+      const levelNodes = nodesByLevel[node.label];
+      const index = levelNodes.findIndex(n => n.id === node.id); // assuming each node has a unique 'id' field
+      return {
+        ...node,
+        fx: index * spacing,               // spread horizontally by index
+        fy: levelHeights[node.label] ?? 0, // fixed y position by level
+      };
+    });
+
+    setGraphData({
+      nodes,
+      links: data.links,
+    });
+  } catch (error) {
+    console.error("Failed to fetch or process data:", error);
+  }
+};
+
         // const safeData = {
         //   nodes: Array.isArray(data.nodes) ? data.nodes : [],
         //   links: Array.isArray(data.links) ? data.links : [],
         // };
 
         // setGraphData(safeData);
-      } catch (err) {
-        console.error("Failed to fetch graph data:", err);
-        // Optional: show fallback graph to prevent crash
-        setGraphData({ nodes: [], links: [] });
-      }
-    };
+      
+    
 
     fetchData();
   }, []);

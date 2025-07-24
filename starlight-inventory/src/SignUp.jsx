@@ -6,8 +6,6 @@ function SignUp(){
             <input placeholder="Enter your first name" style={{borderRadius: '8px', backgroundColor: '#BDC1C3', fontSize: '1.5rem', padding: '0.7rem', width: '50rem'}}></input>
             <h1 style={{backgroundColor: '#BDC1C3', fontSize: '2rem', color: '#173D62'}}>Enter your last name</h1>
             <input placeholder="Enter your last name" style={{borderRadius: '8px', backgroundColor: '#BDC1C3', fontSize: '1.5rem', padding: '0.7rem', width: '50rem'}}></input>
-            <h1 style={{backgroundColor: '#BDC1C3', fontSize: '2rem', color: '#173D62'}}>Enter your phone number</h1>
-            <input placeholder="Enter your phone number" style={{borderRadius: '8px', backgroundColor: '#BDC1C3', fontSize: '1.5rem', padding: '0.7rem', width: '50rem'}}></input>
             <h1 style={{backgroundColor: '#BDC1C3', fontSize: '2rem', color: '#173D62'}}>Enter your username</h1>
             <input placeholder="Enter your username" style={{borderRadius: '8px', backgroundColor: '#BDC1C3', fontSize: '1.5rem', padding: '0.7rem', width: '50rem'}}></input>
             <h1 style={{backgroundColor: '#BDC1C3', fontSize: '2rem', color: '#173D62'}}>Enter your password</h1>

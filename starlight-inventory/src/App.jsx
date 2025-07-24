@@ -21,6 +21,13 @@ import FRView from './FRView'
 import FRGView from './FRGView'
 import FRBuild from './FRBuild'
 import StentInvTable from './StentInvTable'
+import StentBOMLots from './StentBOMLots'
+import LotManagement from './LotManagement'
+import AddLots from './AddLots'
+import PreviewInventory from './PreviewInventory'
+import FinishedGoods from './FinishedGoods'
+import UserHistory from './UserHistory'
+import LowInv from './LowInv'
 
 function App() {
   return (
@@ -48,6 +55,13 @@ function App() {
         <Route path='/fr-bom-graph-view' element={<FRGView/>}/>
         <Route path='/fr-bom-build' element={<FRBuild/>}/>
         <Route path='/stent-inventory-table-view' element={<StentInvTable/>}/>
+        <Route path='/stent-bom-lots' element={<StentBOMLots/>}/>
+        <Route path="/lot-management" element={<LotManagement />} />
+        <Route path="/add-lots" element={<AddLots />} />
+        <Route path="/preview-inventory" element={<PreviewInventory />} />
+        <Route path="/finished-goods" element={<FinishedGoods />} />
+        <Route path="/user-history" element={<UserHistory />} />
+        <Route path="/low-inv" element={<LowInv />} />
       </Routes>
     </Router>
   )

@@ -101,7 +101,7 @@ function ImplantInventoryView(){
     return (
         <div style={{padding:'2rem', color:'white', position:'relative'}}>
             <h1>Implant Inventory Table</h1>
-            <table border="1" style={{ borderCollapse: "collapse", width: "100%" }}>
+            <table border="1" style={{ borderCollapse: "collapse", width: "100%", marginBottom: "4rem"}}>
                 <thead>
                     <tr>
                         {columns.map((key, index)=>(

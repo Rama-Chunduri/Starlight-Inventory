@@ -47,7 +47,7 @@ function ImplantInventoryDelete(){
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Label</h1>
         <input style={{color: "#1736D2", marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="label" placeholder="Enter label:" value={formData.label} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Serial Number</h1>
-        <input style={{color: "#1736D2", marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="serialNumber" placeholder="Enter serial number:" value={formData.serial_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <input style={{color: "#1736D2", marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="serial_number" placeholder="Enter serial number:" value={formData.serial_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Design</h1>
          <CustomDropDown
             name="design" 
@@ -107,7 +107,7 @@ function ImplantInventoryDelete(){
             allowCustomInput={false}
         />
       
-      <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={handleDelete}>Submit</button>
+      <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62', marginBottom: "2rem"}} onClick={()=>{handleDelete(); navigate('/implant-inventory-view')}}>Submit</button>
     </div>
     )
 }

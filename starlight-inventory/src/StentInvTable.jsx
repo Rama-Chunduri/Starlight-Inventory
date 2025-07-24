@@ -49,7 +49,7 @@ function StentInvTable(){
         headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ unique_id: row.unique_id }),
+      body: JSON.stringify({ id: row.id }),
       });
       if (!res.ok) throw new Error("Delete failed");
       setData(data.filter((_, idx) => idx !== rowIdx));
@@ -109,7 +109,7 @@ function StentInvTable(){
 
     
     return (
-        <div style={{padding:'2rem', color:'white', position:'relative'}}>
+        <div style={{padding:'2rem', color:'white', position:'relative', marginBottom: '4rem'}}>
             <h1>Stent Inventory Table</h1>
             <table border="1" style={{ borderCollapse: "collapse", width: "100%" }}>
                 <thead>
@@ -122,7 +122,7 @@ function StentInvTable(){
                 </thead>
                 <tbody>
                     {data.map((row,idx)=>(
-                        <tr key={row.unique_id}>
+                        <tr key={row.id}>
                             {columns.map((colKey)=>{
                                 const isEditing = 
                                     editingCell && 
@@ -130,7 +130,7 @@ function StentInvTable(){
                                     editingCell.colKey === colKey
                                     return(
                                        <td
-                                            key={`${row.unique_id}-${colKey}`}  
+                                            key={`${row.id}-${colKey}`}  
                                             onClick={(e) => !isEditing && handleCellClick(e, idx, colKey)}
                                             style={{ cursor: isEditing ? "auto" : "pointer", padding: "0.5rem"}}
                                         >
@@ -214,7 +214,7 @@ function StentInvTable(){
                     borderRadius: "8px"
                 }}>
                     {lowQuantityComponents.length === 0 ? (
-                    <li>No low inventory components</li>
+                    <li style={{backgroundColor: "pink"}}>No low inventory components</li>
                 ) : (
                     lowQuantityComponents.map((name) => (
                     <li key={name} style={{ backgroundColor: "pink" }}>{name}</li>

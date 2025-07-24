@@ -67,7 +67,7 @@ function ImplantInventoryInsert(){
     <div style={{display:'flex', flexDirection: 'column'}}>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter a csv file</h1>
         <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62", borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="file" accept=".csv" name="csv" placeholder="Enter a csv file:" onChange={handleFileChange}/>
-        <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={()=>handleCSV(csvVal)}>Submit</button>
+        <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={()=>{handleCSV(csvVal); navigate('/implant-inventory-view')}}>Submit</button>
 
         <h1 style={{fontSize: '3rem', marginLeft: '2rem'}}>(OR)</h1>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Label</h1>
@@ -136,7 +136,7 @@ function ImplantInventoryInsert(){
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Notes</h1>
         <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="notes" placeholder="Enter notes:" value={formData.notes} onChange={(e) => handleChange(e.target.name, e.target.value)}/> 
       
-      <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={handleSubmit}>Submit</button>
+      <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={()=> {handleSubmit(); navigate('/implant-inventory-view');}}>Submit</button>
     </div>
     )
 }
