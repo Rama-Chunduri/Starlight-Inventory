@@ -5,10 +5,20 @@ import { useNavigate } from "react-router-dom";
 function AddLots(){
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
-        lot_name: '',
-        quantity: '',
+        receiving_lot_number: '',
+        receipt_date: '',
+        po_number: '',
         part_number: '',
-        part_name: ''
+        rev: '',
+        description: '',
+        supplier_name: '',
+        supplier_lot_number: '',
+        quantity:'',
+        expiration_date: '',
+        human_use: '',
+        lot_issued_by: '',
+        status: '',
+        comments: ''
     });
     const [csvVal, setCsvVal] = useState('')
 
@@ -61,10 +71,12 @@ function AddLots(){
         <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={()=>{handleCSV(csvVal); navigate('/stent-bom-lots')}}>Submit</button>
 
         <h1 style={{fontSize: '3rem', marginLeft: '2rem'}}>(OR)</h1>
-        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Lot Name</h1>
-        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem',color: "#173D62", borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="lot_name" placeholder="Enter label:" value={formData.lot_name} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
-        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Quantity</h1>
-        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="quantity" placeholder="Enter quantity:" value={formData.quantity} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Receiving Lot Number</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem',color: "#173D62", borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="lot_name" placeholder="Enter receiving lot number:" value={formData.receiving_lot_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Receipt Date</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="quantity" placeholder="Enter receipt date:" value={formData.receipt_date} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter PO #</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="quantity" placeholder="Enter po number:" value={formData.po_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Part Number</h1>
          <CustomDropDown
             name="part_number"
@@ -88,8 +100,49 @@ function AddLots(){
             ]}
             allowCustomInput={false}
         />
-       
-      <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={()=>{handleSubmit(); navigate('/stent-bom-lots')}}>Submit</button>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Revision</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="revision" placeholder="Enter revision:" value={formData.rev} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Description</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="description" placeholder="Enter revision:" value={formData.description} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Supplier Name</h1>
+         <CustomDropDown
+            name="supplier_name"
+            value={formData.supplier_name}
+            onChange={(value) => handleChange("supplier_name", value)}
+            options={['Oliver Healthcare Packaging', 'CathX Medical', 'Admedes, Inc.', 'Symmetry Laser', 'Baro Studio', 'Confluent Medical Technologies, Inc.', 'Blue Line Sterilization Services', 'Corline Biomedical AB', 'G.RAU Inc.', 'Mansell Designs', 'Aptyx Charlotte', 'Merit Medical Systems', 'MicroLumen', 'NAMSA', 
+                'OpSens Medical', 'Resonetics', 'Shellock R&D Services', 'Techmaster', 'Acculabs', 'Bay Centerless Grinding', 'BDC', 'Biocoat','Blockwise Engineering LLC', 'CI Medical', 'Component Supply', 'ENGAGE MEDICAL DEVICE SERVICES', 'EPflex Feinwerktechnik GmbH', 'CV Path',
+                'Euroflex', 'Johnson Matthey', 'Keyence Corporation', 'Pharmaron', 'United Biologics', 'SyndaverX, Inc', 'Vactronix', 'Vascotube', 'American Furukawa, Inc.', 'MedRes International', 'Jose Alejandro', 'Farlows Scientific', 'Paradyne Medical'
+            ]}
+            allowCustomInput={true}
+        />
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Supplier Lot Number</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="revision" placeholder="Enter supplier lot number:" value={formData.supplier_lot_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Quantity</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="quantity" placeholder="Enter quantity:" value={formData.quantity} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Expiration Date</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="expiration date" placeholder="Enter expiration date:" value={formData.expiration_date} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Human Use</h1>
+       <CustomDropDown
+            name="human_use"
+            value={formData.human_use}
+            onChange={(value) => handleChange("human_use", value)}
+            options={['yes', 'no']}
+            allowCustomInput={false}
+        />
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Lot Issued By</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="lot_issued_by" placeholder="Enter lot issued by:" value={formData.lot_issued_by} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Status</h1>
+        <CustomDropDown
+            name="status"
+            value={formData.status}
+            onChange={(value) => handleChange("status", value)}
+            options={['accept', 'reject']}
+            allowCustomInput={false}
+        />
+        <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Comments</h1>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="comments" placeholder="Enter lot issued by:" value={formData.comments} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+
+      <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62', marginBottom: '4rem'}} onClick={()=>{handleSubmit(); navigate('/stent-bom-lots')}}>Submit</button>
     </div>
     )
 }

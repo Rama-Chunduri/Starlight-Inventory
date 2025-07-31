@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@neo4j-nvl/react": "^0.3.8",
+    "body-parser": "^2.2.0",
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "googleapis": "^154.1.0",
     "neovis.js": "^2.1.0",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",

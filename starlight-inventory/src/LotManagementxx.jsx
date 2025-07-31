@@ -1,55 +1,98 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
-function LotManagement(){
+function LotManagementxx() {
   const location = useLocation();
   const navigate = useNavigate();
-
-  const partNumberArray = location.state?.partNumberArray || [];
+  const components = location.state?.components || [];
+  const partNumbersArray = location.state?.partNumbersArray || [];
   const quantity = location.state?.quantity || [];
-
+  const [allLotData, setAllLotData] = useState({});
   const [componentIndex, setComponentIndex] = useState(0);
   const [lotData, setLotData] = useState([]);
   const [inputValue, setInputValue] = useState(""); // Raw user input
   const [selectedIds, setSelectedIds] = useState([]);
 
-  const currentComponent = partNumberArray[componentIndex];
-  const isLastComponent = componentIndex === partNumberArray.length - 1;
+  const currentComponent = components[componentIndex];
+  const isLastComponent = componentIndex === components.length - 1;
+  const allLotDataRef = useRef({});
 
+  // Fetch lots only for current component’s part number
   useEffect(() => {
-    if (!currentComponent) return;
-    fetch(`http://localhost:8000/lots?part_numbers=${currentComponent}`)
-      .then((res) => res.json())
-      .then((data) => {
-        setLotData(data);
-      })
-      .catch((err) => console.error("Error fetching lots:", err));
+    const currentPartNumber = partNumbersArray[componentIndex];
+    if (!currentComponent?.part_number) return;
+
+     const normalizedPartNumbersArray = Array.isArray(currentPartNumber)
+    ? currentPartNumber
+    : [currentPartNumber];
+
+  const params = new URLSearchParams();
+  normalizedPartNumbersArray.forEach((pn) => {
+    params.append("part_numbers", pn);
+  });
+   fetch(`http://localhost:8000/lots?${params.toString()}`)
+  .then(res => res.json())
+  .then(data => {
+    setLotData(data);
+
+    // Use ref to avoid stale updates
+    allLotDataRef.current = {
+      ...allLotDataRef.current,
+      [currentComponent.unique_id]: data
+    };
+
+    setAllLotData(prev => {
+      return {
+        ...prev,
+        [currentComponent.unique_id]: data
+      };
+    });
+  });
+
   }, [currentComponent]);
 
-  const addId = (id) => {
-    setSelectedIds((prev) => [...prev, id]);
-    setInputValue("");
-  };
 
-    const handleNext = () => {
-    if (!isLastComponent) {
-      setComponentIndex((prev) => prev + 1);
-    } else {
-      // Proceed to final screen
-      navigate("/preview-inventory", {
-        state: {
-          quantity,
-          selectedIds,
-        },
-      });
-    }
-  };
+  console.log("allLotData")
+  console.log(allLotData)
 
-    return (
+const addId = (id) => {
+  setSelectedIds(prev => {
+    if (prev.includes(id)) return prev; // avoid duplicates
+    return [...prev, id];
+  });
+  setInputValue("");
+};
+;
+
+const handleNext = () => {
+  const num = Number(inputValue.trim());
+  if (!isNaN(num) && inputValue.trim() !== "") {
+    addId(num);
+  }
+
+  if (isLastComponent) {
+    navigate("/preview-inventory", {
+      state: {
+        uniqueIds: selectedIds,
+        selectedIds, // flat array of all input IDs
+        components,
+        allLotData,
+        quantity
+      }
+    });
+  } else {
+    setComponentIndex(prevIndex => prevIndex + 1);
+  }
+
+  setInputValue(""); // clear the input
+};
+
+  return (
     <div style={{ margin: "2rem" }}>
       <h2 style={{ fontSize: "3rem" }}>Lot Management</h2>
       <h3 style={{ fontSize: "2rem" }}>
-        Component {componentIndex + 1} of {partNumberArray.length}: {currentComponent}
+        Component {componentIndex + 1} of {components.length}:{" "}
+        {currentComponent?.description || "Unknown"} ({currentComponent?.part_number || "N/A"})
       </h3>
 
       {lotData.length === 0 ? (
@@ -103,16 +146,6 @@ function LotManagement(){
           if (e.key === "Enter") {
             const num = Number(inputValue.trim());
               if (!isNaN(num) && inputValue.trim() !== "") {
-                const selectedLot = lotData.find(lot => lot.unique_id === num);
-                if (!selectedLot) {
-                    alert("Invalid ID");
-                    return;
-                }
-
-                if (selectedLot.quantity < quantity) {
-                    navigate("/low-inv");
-                    return;
-                }
                 addId(num);
               }
           }
@@ -147,4 +180,4 @@ function LotManagement(){
   );
 }
 
-export default LotManagement;
+export default LotManagementxx;

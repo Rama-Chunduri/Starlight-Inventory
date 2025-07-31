@@ -8,32 +8,31 @@ function Login(){
     const [isValid, setisValid] = useState(true)
     const navigate = useNavigate()
     const handleLogin = async () => {
-      const response = await fetch ("http://localhost:8000/login", {
-        method: "POST",
-        headers: {"Content-Type": "application/json"},
-        body: JSON.stringify({username, password})
-      })
-      console.log("Response status:", response.status)
-      if (!response.ok) {
-        console.error("HTTP error", response.status)
-        return
-      }
-      const data = await response.json()
-      if (data.status == "valid"){
-        console.log("Login successful")
-        setisValid(true)
-        navigate('/dashboard', {
-          state: {
-            first_name: data.first_name,
-            last_name: data.last_name
-          },
-        });
-      }
-      else{
-        console.log("Login failed")
-        setisValid(false)
-      }
+    const response = await fetch("http://localhost:8000/login", {
+      method: "POST",
+      headers: {"Content-Type": "application/json"},
+      body: JSON.stringify({ username, password })
+    });
+
+    const data = await response.json();
+    if (!response.ok) {
+      console.error("Login failed:", data.detail);
+      setisValid(false);
+      return;
     }
+
+  // Store JWT in localStorage or cookie
+    localStorage.setItem("token", data.access_token);
+
+    console.log("Login successful");
+    setisValid(true);
+    navigate('/dashboard', {
+      state: {
+        first_name: data.first_name,
+        last_name: data.last_name
+      },
+    });
+  }
 
   return (
     <>

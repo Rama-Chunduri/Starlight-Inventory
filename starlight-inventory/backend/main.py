@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, HTTPException, Depends
 from auth import validate_login
 from auth import create_user
 from pydantic import BaseModel
@@ -6,48 +6,162 @@ from fastapi.middleware.cors import CORSMiddleware
 import mysql.connector
 from neo4j import GraphDatabase
 from fastapi import Query
-from typing import List
+from typing import List, Dict
 from fastapi import Request
 import pandas as pd
 from io import StringIO
 from fastapi import Body
 import json
+from datetime import datetime, timedelta
+from fastapi.security import OAuth2PasswordBearer
+from jose import jwt, JWTError
+import bcrypt
+import secrets
 
 class LoginRequest(BaseModel):
     username: str
     password: str
 
+class SignUpRequest(BaseModel):
+    firstname: str
+    lastname: str
+    username: str
+    password: str
+
+class UserRequest(BaseModel):
+    firstname: str
+    lastname: str
+    username: str
+
 app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Your React frontend dev server
+    allow_origins=["http://localhost:5173"], 
     allow_credentials=True,
-    allow_methods=["*"],  # Allow all HTTP methods (GET, POST, etc.)
-    allow_headers=["*"],  # Allow all headers (like Content-Type, Authorization)
+    allow_methods=["*"],  
+    allow_headers=["*"],  
 )
 
+SECRET_KEY = secrets.token_urlsafe(64)
+ALGORITHM = 'HS256'
+oauth2scheme = OAuth2PasswordBearer(tokenUrl="login")
+ACCESS_TOKEN_EXPIRE_MINUTES = 60
+
+def create_jwt_token(username : str):
+    return jwt.encode({"sub":username}, SECRET_KEY, algorithm=ALGORITHM)
+
+def verify_password(plain_password: str, hashed_password: str):
+    bcrypt.checkpw(plain_password.encode(), hashed_password.encode())
+
+@app.get("/me")
+def get_current_user(token: str = Depends(oauth2scheme)):
+    try:
+        payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
+        username = payload.get("sub")
+        conn = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            password = "Rajahmundry",
+            database = "starlight_inventory"
+        )
+        cursor = conn.cursor(dictionary=True)
+        cursor.execute("SELECT username, first_name, last_name FROM users WHERE username = %s", (username,))
+        user = cursor.fetchone()
+        cursor.close()
+        conn.close()
+        return user
+    except JWTError:
+        raise HTTPException(status_code=401, detail="Invalid token")
+
+@app.post("/add-user")
+def add_user(data: UserRequest):
+    try:
+        conn = mysql.connector.connect(
+            host = "localhost",
+            user = "root",
+            password = "Rajahmundry",
+            database = "starlight_inventory"
+        )
+        cursor = conn.cursor()
+        cursor.execute("""
+            INSERT INTO users (first_name, last_name, username)
+            VALUES (%s, %s, %s)
+        """, (data.firstname, data.lastname, data.username))
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"status": "success"}
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=str(err))
+    
 @app.post("/login")
 def login(data: LoginRequest):
     try:
-        result = validate_login(data.username, data.password)
-        if result:
-            return {
-                "status": "valid",
-                "first_name": result["first_name"],
-                "last_name": result["last_name"]
-            }
-        else:
-            return {"status": "invalid"}
-    except Exception as e:
-        print("Login error:", e)
-        return {"status": "error", "detail": str(e)}
+       conn = mysql.connector.connect(
+           host = "localhost",
+           user = "root",
+           password = "Rajahmundry",
+           database = "starlight_inventory"
+       )
+       cursor = conn.cursor()
+       cursor.execute("SELECT password_hash, first_name, last_name FROM users WHERE username = %s", (data.username,))
+       result = cursor.fetchone()
+       cursor.close()
+       conn.close()
+       if not result:
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+       stored_hash = result[0]
+       if not bcrypt.checkpw(data.password.encode(), stored_hash.encode()):
+            raise HTTPException(status_code=401, detail="Invalid credentials")
+       to_encode = {
+            "sub": data.username,
+            "exp": datetime.utcnow() + timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
+        }
+       token = jwt.encode(to_encode, SECRET_KEY, algorithm=ALGORITHM)
+       return {"access_token": token, "token_type": "bearer"}
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=str(err))
 
 
 @app.post("/signup")
-def signup(data : LoginRequest):
-    result = create_user(data.username, data.password)
-    return {"status":result}
+def signup(data: SignUpRequest):
+    try:
+        conn = mysql.connector.connect(
+            host="localhost",
+            user="root",
+            password="Rajahmundry",
+            database="starlight_inventory"
+        )
+        cursor = conn.cursor()
+
+        # Check if user exists and password hasn't been set yet
+        cursor.execute(
+            "SELECT password_hash FROM users WHERE username = %s",
+            (data.username,)
+        )
+        result = cursor.fetchone()
+
+        if not result:
+            raise HTTPException(status_code=404, detail="Username not found")
+
+        if result[0] is not None:
+            raise HTTPException(status_code=400, detail="Password already set. Please login instead.")
+        
+        hashed_password = bcrypt.hashpw(data.password.encode(), bcrypt.gensalt()).decode()
+
+        cursor.execute(
+            "UPDATE users SET password_hash = %s WHERE username = %s",
+            (hashed_password, data.username)
+        )
+
+        conn.commit()
+        cursor.close()
+        conn.close()
+        return {"status": "Password set successfully. You can now login."}
+
+    except mysql.connector.Error as err:
+        raise HTTPException(status_code=500, detail=str(err))
 
 @app.get("/implant-inventory-view")
 def get_implant_inventory():
@@ -82,6 +196,22 @@ def get_fr_table():
     conn.close()
     return rows
 
+@app.get("/user-history-table")
+def get_implant_inventory():
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry",
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM user_history"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
 @app.get("/update-permissions")
 def get_user_table():
     conn = mysql.connector.connect(
@@ -91,7 +221,7 @@ def get_user_table():
         database = 'starlight_inventory'
     )
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT id, username, first_name, last_name, phone_number, roles FROM users"
+    sql = "SELECT id, username, first_name, last_name, roles FROM users"
     cursor.execute(sql)
     rows = cursor.fetchall()
     cursor.close()
@@ -130,6 +260,22 @@ def get_stent_inventory():
     conn.close()
     return rows
 
+@app.get("/finished-goods-table")
+def get_stent_inventory():
+    conn = mysql.connector.connect(
+        host = "localhost",
+        user = "root",
+        password = "Rajahmundry", 
+        database = 'starlight_inventory'
+    )
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM finished_goods"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
 @app.get("/stent-lots-table-view")
 def get_stent_lots(rejectState: str = Query("all")):
     conn = mysql.connector.connect(
@@ -140,9 +286,9 @@ def get_stent_lots(rejectState: str = Query("all")):
     )
     cursor = conn.cursor(dictionary=True)
     if rejectState == "accept":
-        sql = "SELECT * FROM stent_lot_management_table WHERE acceptance = 'accept' "
+        sql = "SELECT * FROM stent_lot_management_table WHERE status = 'accept' "
     elif rejectState == "reject":
-        sql = "SELECT * FROM stent_lot_management_table WHERE acceptance = 'reject' "
+        sql = "SELECT * FROM stent_lot_management_table WHERE status = 'reject' "
     else:
         sql = "SELECT * FROM stent_lot_management_table"
     cursor.execute(sql)
@@ -274,7 +420,7 @@ def get_kit_builds(request: Request):
             MATCH (kit)
             WHERE id(kit) IN $node_ids
             OPTIONAL MATCH (comp)-[:SUB_COMPONENT_OF]->(kit)
-            RETURN kit, collect(DISTINCT comp) AS components
+            RETURN kit, collect(DISTINCT comp) AS components.
         """, {"node_ids": ids})
 
         for record in result:
@@ -688,6 +834,27 @@ def get_lots(part_numbers: List[str] = Query(...)):
     conn.close()
     return rows
 
+@app.get("/lots-preview", response_model=List[Dict])
+def get_lots_preview(unique_ids: List[int] = Query(...)) -> List[Dict]:
+    conn = mysql.connector.connect(
+        host="localhost",
+        user="root",
+        password="Rajahmundry",
+        database="starlight_inventory"
+    )
+    cursor = conn.cursor(dictionary=True)
+
+    format_strings = ','.join(['%s'] * len(unique_ids))
+    cursor.execute(
+        f"SELECT * FROM stent_lot_management_table WHERE unique_id IN ({format_strings})",
+        tuple(unique_ids)
+    )
+    rows = cursor.fetchall()
+
+    cursor.close()
+    conn.close()
+    return rows
+
 @app.get("/preview-inventory")
 def get_parts(ids: str):
     conn = mysql.connector.connect(
@@ -723,7 +890,8 @@ class UpdateLotItem(BaseModel):
     updated_quantity: int
     
 @app.post("/update-lots")
-def update_lots(items: List[UpdateLotItem]):
+def update_lots( user_id: str, items: List[UpdateLotItem],request: Request = None):
+    ip = request.client.host
     conn = mysql.connector.connect(
         host="localhost",
         user="root",
@@ -731,13 +899,19 @@ def update_lots(items: List[UpdateLotItem]):
         database="starlight_inventory"
     )
     cursor = conn.cursor()
-
+    print(user_id)
     for item in items:
         cursor.execute(
             "UPDATE stent_lot_management_table SET quantity = %s WHERE unique_id = %s",
             (item.updated_quantity, item.unique_id)
         )
-
+    cursor.execute(
+    "INSERT INTO user_history (username, actions, ip_address, status) VALUES (%s, %s, %s, %s)",
+    (user_id, 'build', ip, 'success')
+    )
+    cursor.execute(
+    "INSERT INTO finished_goods (part_number, expiration_date) VALUES ('STR-DA2-FS-00001.00', DATE_ADD(CURRENT_DATE, INTERVAL 3 YEAR))"
+    )
     conn.commit()
     cursor.close()
     conn.close()

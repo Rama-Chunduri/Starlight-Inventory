@@ -1,213 +1,131 @@
+import { useState } from "react"
 import { useNavigate } from "react-router-dom";
-import {useState, useEffect} from "react"
-import './Dashboard.css'
 
 function StentBOMBuild(){
-  const [selectedKitIds, setSelectedKitIds] = useState([]);
-  const [kitsData, setKitsData] = useState([]);
-  const [quantities, setQuantities] = useState({}); //filled with part numbers
-  const [descriptionToQuantity, setDescriptionToQuantity] = useState({});
-  const [componentQuantities, setComponentQuantities] = useState({});  // For quantities (numbers)
-  const [kitQuantities, setKitQuantities] = useState({});
-  const navigate = useNavigate()
-  const availableKits = [
-    { id: 0, name: "Sterilized Starlight Stent Systems DDPC32" },
-    //{ id: 2, name: "Unsterilized Starlight Stent Systems DDPC32" },
-    { id: 4, name: "Packaged Starlight Stent System DDPC32" },
-    //{ id: 6, name: "Lifeline Stent Shelf Carton & Pouch Label" },
-    { id: 13, name: "Starlight Stent System DDPC32" },
-    //{ id: 16, name: "Stent DDPC32" },
-    { id: 25, name: "Uncoated Pusher Tube DDPC32" },
-    { id: 37, name: "Uncoated Catheter DDPC32" },
-    { id: 44, name: "Distal Catheter DDPC32" },
-    { id: 45, name: "Catheter Braid" },
-  ];
+    const [quantity, setQuantity] = useState(0);
+    const [partNumber, setPartNumber] = useState("");
+    const navigate = useNavigate();
+    const subcomponents = [
+        "Coated Pushertube DDPC32", 
+        "Stent Assembly",
+        "Catheter Assembly DDPC32",
+        "Rotating Hemostatic Valve",
+        "Pushertube Hub Bushing DDPC32",
+        "Pushertube Hub Housing DDPC32",
+        "Hub Adhesive",
+        "Strain Relief, DDPC32",
+        "Thermal Transfer Ribbon",
+        "Lifeline Stent Shelf Carton and Pouch Label Printed Static Artwork",
+        "Hoop Support Card",
+        "Tyvek Pouch",
+        "Shelf Carton",
+        "Patient Card",
+        "Instructions for Use",
+        "Tamper Seal",
+        "Sterilization Indicator",
+    ]
 
-  const allowedDescriptions = [
-    "Catheter Extrusions DDPC32", "Starlight Stent System DDPC32", "Stent Assembly DDPC32", "Coated Pusher Tube DDPC32", "Distal LCT DDPC32"
-  ]
+    const [partNumberArray, setPartNumberArray] = useState(["STR-DA2-CA-10001", "MS-00-50002", "MS-DA2-50002", "MS-DA2-50003", "MS-00-50003", "STR-DA2-DS-30014", "MS-00-50014",
+        "LBL-DA2-0001", "STR-DA2-PK-30007", "STR-DA2-PK-30006", "STR-DA2-PK-30004", "LBL-DA2-0005", "LBL-DA2-0004", "MS-00-50012", "MS-00-50013",
+        "STR-DA2-PK-30003", 
+     ]);
 
-  const calculateSubcomponentQuantities = () => {
-  const result = {};
-  kitsData.forEach(kit => {
-    const kitId = kit.id;
-    const qty = parseInt(kitQuantities[kitId]) || 0;
-
-    kit.components.forEach(comp => {
-      const key = `${comp.description}_${comp.part_number}`;
-      result[key] = (result[key] || 0) + qty;
-    });
-  });
-  return result;
-};
-
-const subcomponentQuantities = calculateSubcomponentQuantities();
-
-useEffect(() => {
-  const updated = { ...quantities };
-  const allComponents = kitsData.flatMap(kit => kit.components);
-
-  allComponents.forEach(comp => {
-    const hasInput = allowedDescriptions.includes(comp.description);
-    const key = hasInput ? comp.unique_id || `${comp.description}_${comp.part_number}` : comp.description;
-
-    if (!(key in updated)) {
-      updated[key] = hasInput ? "" : comp.part_number;
+    function handleInput(){
+        if(partNumber){
+            setPartNumberArray(prev => [...prev,partNumber])
+            setPartNumber("")
+        }
     }
-  });
-
-  setQuantities(updated);
-}, [kitsData]);
-
-useEffect(() => {
-  const initialQuantities = {};
-  const allComponents = kitsData.flatMap(kit => kit.components);
-
-  allComponents.forEach(comp => {
-    const key = comp.unique_id || `${comp.description}_${comp.part_number}`;
-    if (!(key in componentQuantities)) {
-      initialQuantities[key] = 0; // start with 0 quantity
-    }
-  });
-
-  setComponentQuantities(prev => ({ ...initialQuantities, ...prev }));
-}, [kitsData]);
-
-
-
-
-  const toggleKit = (kitId) => {
-    setSelectedKitIds((prev) =>
-      prev.includes(kitId) ? prev.filter((id) => id !== kitId) : [...prev, kitId]
-    );
-  };
-
-  useEffect(() => {
-    if (selectedKitIds.length === 0) {
-      setKitsData([]);
-      return;
-    }
-    console.log("hello")
-    console.log(kitsData);
-    const query = selectedKitIds.join(",");
-    fetch(`http://localhost:8000/kits?ids=${query}`)
-      .then((res) => res.json())
-      .then((data) => setKitsData(data));
-  }, [selectedKitIds]);
-
-  return (
-    <div style={{marginLeft: "2rem"}}>
-      <h2 style={{fontSize: "3rem"}}>Pick Kits</h2>
-      {availableKits.map((kit) => (
-        <label key={kit.id} style={{ display: "block", marginBottom: "8px", fontSize: "2rem" }}>
-          <input
-            type="checkbox"
-            checked={selectedKitIds.includes(kit.id)}
-            onChange={() => {toggleKit(kit.id)}}
-            style={{transform: "scale(3)", marginLeft: "5rem", marginRight: "1.5rem"}}
-          />
-          {kit.name}
-          {selectedKitIds.includes(kit.id) && (
-            <input 
+    return(
+        <div style={{color: "white", margin: "2rem", display: "flex", flexDirection: "column"}}>
+            <h1>Sterilized Starlight Stent System DDPC32</h1>
+            <h2>Building Quantity</h2>
+            <input
             type="text"
             placeholder="Enter quantity"
+            onChange={(e)=>setQuantity(e.target.value)}
             style={{
-              marginLeft: "1rem",
-              backgroundColor: "#BDC1C3",
-              color: "#173D62",
-              borderRadius: "8px",
-              height: "1rem",
-              padding: "0.5rem",
-              fontSize: "1rem"
+                backgroundColor: "#BDC1C3",
+                color: "#173D62",
+                borderRadius: "8px",
+                padding: "0.5rem",
+                fontSize: "1rem",
+                width: "50%"
             }}
-            onChange={e => {
-  const kitQty = parseInt(e.target.value) || 0;
-
-  // Update kit quantities first
-  setKitQuantities(prev => {
-    const updatedKitQuantities = { ...prev, [kit.id]: kitQty };
-
-    // Now recalc all component quantities based on updated kit quantities
-    const updatedComponentQuantities = {};
-
-    kitsData.forEach(kit => {
-      const qty = updatedKitQuantities[kit.id] || 0;
-      kit.components.forEach(comp => {
-        const key = comp.unique_id || `${comp.description}_${comp.part_number}`;
-        updatedComponentQuantities[key] = (updatedComponentQuantities[key] || 0) + qty;
-      });
-    });
-
-    setComponentQuantities(updatedComponentQuantities);
-
-    return updatedKitQuantities;
-  });
-}}
-
-            value={kitQuantities[kit.id] || ""}
             />
-          )}
-        </label>
-      ))}
+            <h1>Subcomponents</h1>
+            <h2>Catheter Assembly DDPC32 (STR-DA2-CA-10001)</h2>
+            <h2>Rotating Hemostatic Valve (MS-00-50002)</h2>
+            <h2>Pushertube Hub Bushing DDPC32 (MS-DA2-50002)</h2>
+            <h2>Pushertube Hub Housing DDPC32 (MS-DA2-50003)</h2>
+            <h2>Hub Adhesive (MS-00-50003)</h2>
+            <h2>Strain Relief, DDPC32 (STR-DA2-DS-30014)</h2>
+            <h2>Thermal Transfer Ribbon (MS-00-50014)</h2>
+            <h2>Lifeline Stent Shelf Carton and Pouch Label (LBL-DA2-0001)</h2>
+            <h2>Hoop Support Card (STR-DA2-PK-30007)</h2>
+            <h2>Tyvek Pouch (STR-DA2-PK-30006)</h2>
+            <h2>Shelf Carton (STR-DA2-PK-30004)</h2>
+            <h2>Patient Card (LBL-DA2-0005)</h2>
+            <h2>Instructions for Use (LBL-DA2-0004)</h2>
+            <h2>Tamper Seal (MS-00-50012)</h2>
+            <h2>Sterilization Indicator (MS-00-50013)</h2>
+            <h2>Starlight Stent System Shipper Box (STR-DA2-PK-30003)</h2>
+            <h2>Coated Pusher Tube DDPC32 (STR-DA2-PT-10012.00)</h2>
 
-      <h2 style={{fontSize: "3rem"}}>Selected Kit Subcomponents</h2>
-      {kitsData.length === 0 ? (
-        <p style={{fontSize: "3rem"}}>No kits selected</p>
-      ) : (
-        kitsData.map((kit) => (
-          <div key={kit.id}>
-            <h3 style={{fontSize: "2.5rem"}}>{kit.name}</h3>
-            <ul>
-              {kit.components.map((comp, idx) => (
-                <li style={{fontSize: "2rem"}} key={idx}>
-                  {comp.description} ({comp.part_number}) — units required: {comp.units}
-                  {allowedDescriptions.includes(comp.description) && (<input 
+            <div style={{display: "flex", flexDirection: "row"}}>
+                <input
+                type="text"
+                placeholder="Enter Part Number"
+                onChange={(e)=>{setPartNumber(e.target.value); }}
+                style={{
+                    color: "#173D62",
+                    backgroundColor: "#BDC1C3",
+                    padding: "0.5rem",
+                    borderRadius: "8px",
+                    width: "30%"
+                }}
+                />
+                <button
+                    style={{color: "#173D62", backgroundColor: "#BDC1C3", marginLeft: "1rem"}}
+                    onClick={handleInput}
+                >
+                    Submit
+                </button>
+            </div>
+
+            <h2>Stent Assembly (STR-DA2-IM-10009.00)</h2>
+            <div>
+                <input
                     type="text"
-                    placeholder="Enter part number"
+                    placeholder="Enter Part Number"
+                    onChange={(e)=>setPartNumber(e.target.value)}
                     style={{
-                      marginLeft: "1rem",
-                      backgroundColor: "#BDC1C3",
-                      color: "#173D62",
-                      borderRadius: "8px",
-                      height: "1rem",
-                      padding: "0.5rem",
-                      fontSize: "1rem",
+                        color: "#173D62",
+                        backgroundColor: "#BDC1C3",
+                        padding: "0.5rem",
+                        borderRadius: "8px",
+                        width: "30%"
                     }}
-                    onChange={e =>{
-                        const value = e.target.value;
-                        setQuantities(prev => ({
-                        ...prev,
-                        [comp.unique_id]: value
-                      }));
-                      setDescriptionToQuantity(prev => ({
-                      ...prev,
-                      [comp.description]: value,
-                    }));
-                    }}
-                  />)}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))
-      )}
-      <button onClick={() => {
-                              const partNumbers = Object.values(quantities).filter(q => q !== "");
-                              navigate("/lot-management", {
-                                state: {
-                                  partNumbers: Object.values(quantities).filter(q => q !== ""),
-                                  quantities, componentQuantities,
-                                  components: kitsData[0]?.components || []
-                                }
-                              });
-
-                            }}
-              style={{backgroundColor: "#BDC1C3", color: "#1736D2", fontSize: "1rem", margin: "1rem"}}>
-              Next
-      </button>
-    </div>
-  );
-
+                />
+                <button
+                    onClick={handleInput}
+                    style={{color: "#173D62", backgroundColor: "#BDC1C3", marginLeft: "1rem"}}
+                >
+                    Submit
+                </button>
+            </div>
+            <button style={{marginBottom: "2rem", marginTop: "2rem", marginLeft: "0.5rem", color: "#173D62", backgroundColor: "#BDC1C3", width: "30%"}}
+            onClick={()=>navigate('/lot-management', {
+                state: {
+                    quantity,
+                    partNumberArray
+                }
+            })}
+            >
+                Pick Lots
+            </button>
+        </div>
+    )
 }
 
 export default StentBOMBuild;

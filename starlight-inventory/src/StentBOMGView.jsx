@@ -72,28 +72,19 @@ const StentBOMGView = () => {
   }
 };
 
-        // const safeData = {
-        //   nodes: Array.isArray(data.nodes) ? data.nodes : [],
-        //   links: Array.isArray(data.links) ? data.links : [],
-        // };
-
-        // setGraphData(safeData);
-      
-    
-
     fetchData();
   }, []);
 
     const labelColors = {
-        Level1: "#1f77b4",   // blue
-        Level2: "#ff7f0e",   // orange
-        Level3: "#2ca02c",   // green
-        Level4: "#d62728",   // red
-        Level5: "#9467bd",   // purple
-        Level6: "#8c564b",   // brown
-        Level7: "#e377c2",   // pink
-        Level8: "#7f7f7f",   // gray
-        Level9: "#bcbd22",   // yellow-green
+        Level1: "#1f77b4",   
+        Level2: "#ff7f0e",  
+        Level3: "#2ca02c",  
+        Level4: "#d62728",
+        Level5: "#9467bd", 
+        Level6: "#8c564b",   
+        Level7: "#e377c2",  
+        Level8: "#7f7f7f",   
+        Level9: "#bcbd22",  
     };
 
     

@@ -28,13 +28,15 @@ import PreviewInventory from './PreviewInventory'
 import FinishedGoods from './FinishedGoods'
 import UserHistory from './UserHistory'
 import LowInv from './LowInv'
+import ProtectedRoute from './ProtectedRoute'
+import Traveler from './Traveler'
 
 function App() {
   return (
     <Router>
       <Routes>
         <Route path='/' element={<Login />}/>
-        <Route path='/dashboard' element={<Dashboard />}/>
+        <Route path='/dashboard' element={<ProtectedRoute> <Dashboard /> </ProtectedRoute>}/>
         <Route path='/implant-inventory' element={<ImplantInventory />}/>
         <Route path='/stent-bom' element={<StentBOM />}/>
         <Route path='/flow-restrictor-bom' element={<FlowRestrictorBOM />}/>
@@ -62,6 +64,7 @@ function App() {
         <Route path="/finished-goods" element={<FinishedGoods />} />
         <Route path="/user-history" element={<UserHistory />} />
         <Route path="/low-inv" element={<LowInv />} />
+        <Route path="/traveler" element={<Traveler />} />
       </Routes>
     </Router>
   )

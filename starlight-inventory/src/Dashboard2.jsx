@@ -12,6 +12,8 @@ function Dashboard2() {
                 <button onClick={()=>navigate('/implant-inventory')} className="flex-item-dash">Implant Inventory</button>
                 <button onClick={()=>navigate('/stent-bom')} className="flex-item-dash">Stent BOM</button>
                 <button onClick={()=>navigate('/flow-restrictor-bom')} className="flex-item-dash">Flow Restrictor BOM</button>
+                <button onClick={()=>navigate('/finished-goods')} className="flex-item-dash">Finished Goods</button>
+                <button onClick={()=>navigate('/user-history')} className="flex-item-dash">User History</button>
                 <button onClick={()=>navigate('/edit-permissions')} className="flex-item-dash">Edit Permissions</button>
             </div>
         </div>
