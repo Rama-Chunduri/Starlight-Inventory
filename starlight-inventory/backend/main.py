@@ -99,10 +99,10 @@ def add_user(data: UserRequest):
 def login(data: LoginRequest):
     try:
        conn = mysql.connector.connect(
-           host = "localhost",
-           user = "root",
-           password = "Rajahmundry",
-           database = "starlight_inventory"
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
        )
        cursor = conn.cursor()
        cursor.execute("SELECT password_hash, first_name, last_name FROM users WHERE username = %s", (data.username,))
