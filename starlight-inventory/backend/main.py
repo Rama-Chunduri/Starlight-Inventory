@@ -60,11 +60,11 @@ def get_current_user(token: str = Depends(oauth2scheme)):
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username = payload.get("sub")
         conn = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "Rajahmundry",
-            database = "starlight_inventory"
-        )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
         cursor = conn.cursor(dictionary=True)
         cursor.execute("SELECT username, first_name, last_name FROM users WHERE username = %s", (username,))
         user = cursor.fetchone()
@@ -78,11 +78,11 @@ def get_current_user(token: str = Depends(oauth2scheme)):
 def add_user(data: UserRequest):
     try:
         conn = mysql.connector.connect(
-            host = "localhost",
-            user = "root",
-            password = "Rajahmundry",
-            database = "starlight_inventory"
-        )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
         cursor = conn.cursor()
         cursor.execute("""
             INSERT INTO users (first_name, last_name, username)
@@ -128,10 +128,10 @@ def login(data: LoginRequest):
 def signup(data: SignUpRequest):
     try:
         conn = mysql.connector.connect(
-            host="localhost",
-            user="root",
-            password="Rajahmundry",
-            database="starlight_inventory"
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
         )
         cursor = conn.cursor()
 
@@ -166,11 +166,11 @@ def signup(data: SignUpRequest):
 @app.get("/implant-inventory-view")
 def get_implant_inventory():
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = "SELECT * FROM implant_inventory"
     cursor.execute(sql)
@@ -183,11 +183,11 @@ def get_implant_inventory():
 @app.get("/fr-table-view")
 def get_fr_table():
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = "SELECT * FROM frbom"
     cursor.execute(sql)
@@ -199,11 +199,11 @@ def get_fr_table():
 @app.get("/user-history-table")
 def get_implant_inventory():
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = "SELECT * FROM user_history"
     cursor.execute(sql)
@@ -215,11 +215,11 @@ def get_implant_inventory():
 @app.get("/update-permissions")
 def get_user_table():
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = "SELECT id, username, first_name, last_name, roles FROM users"
     cursor.execute(sql)
@@ -231,11 +231,11 @@ def get_user_table():
 @app.get("/stent-bom-table-view")
 def get_user_table():
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = "SELECT * FROM stentbom"
     cursor.execute(sql)
@@ -247,11 +247,11 @@ def get_user_table():
 @app.get("/stent-inventory-table-view")
 def get_stent_inventory():
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = "SELECT * FROM stent_inventory"
     cursor.execute(sql)
@@ -263,11 +263,11 @@ def get_stent_inventory():
 @app.get("/finished-goods-table")
 def get_stent_inventory():
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = "SELECT * FROM finished_goods"
     cursor.execute(sql)
@@ -279,11 +279,11 @@ def get_stent_inventory():
 @app.get("/stent-lots-table-view")
 def get_stent_lots(rejectState: str = Query("all")):
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     if rejectState == "accept":
         sql = "SELECT * FROM stent_lot_management_table WHERE status = 'accept' "
@@ -446,11 +446,11 @@ def get_kit_builds(request: Request):
 async def add_data_to_database(formData: dict=Body(...)):
     print("Received formData keys:", list(formData.keys()))
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     columns = ','.join(formData.keys())
     placeholders = ','.join(['%s'] * len(formData))
@@ -466,11 +466,11 @@ async def add_data_to_database(formData: dict=Body(...)):
 async def add_data_to_database(formData: dict=Body(...)):
     print("Received formData keys:", list(formData.keys()))
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     columns = ','.join(formData.keys())
     placeholders = ','.join(['%s'] * len(formData))
@@ -538,11 +538,11 @@ async def add_csv_to_database(request: Request):
 
 
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rajahmundry",
-        database="starlight_inventory"
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor()
 
     cols = list(pivot.columns)
@@ -566,11 +566,11 @@ async def add_csv_to_database_lots(request: Request):
     print(csv_text)
     csv_file_like = StringIO(csv_text)
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     df = pd.read_csv(csv_file_like)
     columnns = ','.join(df.columns)
     placeholders = ','.join(['%s']*len(df.columns))
@@ -589,11 +589,11 @@ async def delete_from_database(filter: dict = Body(...)):
     if not filter:
         return {"error": "No filter fields provided"}
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry", 
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     where_clause = " AND ".join([f"{key} = %s" for key in filter])
     sql = f"DELETE FROM implant_inventory WHERE {where_clause}"
     cursor = conn.cursor()
@@ -616,11 +616,11 @@ def update_implant_inventory(item: dict=Body(...)):
     values = list(update_fields.values()) + [unique_id]
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"UPDATE implant_inventory SET {set_clause} WHERE unique_id = %s"
     cursor.execute(sql, values)
@@ -643,11 +643,11 @@ def update_stent_lots(item: dict=Body(...)):
     values = list(update_fields.values()) + [unique_id]
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"UPDATE stent_lot_management_table SET {set_clause} WHERE unique_id = %s"
     cursor.execute(sql, values)
@@ -669,11 +669,11 @@ def update_stent_inventory(item: dict=Body(...)):
     values = list(update_fields.values()) + [id]
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"UPDATE stent_inventory SET {set_clause} WHERE id = %s"
     cursor.execute(sql, values)
@@ -695,11 +695,11 @@ def update_implant_inventory(item: dict=Body(...)):
     values = list(update_fields.values()) + [unique_id]
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"UPDATE frbom SET {set_clause} WHERE unique_id = %s"
     cursor.execute(sql, values)
@@ -715,11 +715,11 @@ def delete_row_implant_inventory(item: dict=Body(...)):
         return {"error" : "unique_id is required"}
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"DELETE FROM implant_inventory WHERE unique_id = %s"
     cursor.execute(sql, (unique_id,))
@@ -736,11 +736,11 @@ def delete_row_stent_lots(item: dict=Body(...)):
         return {"error" : "unique_id is required"}
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"DELETE FROM stent_lot_management_table WHERE unique_id = %s"
     cursor.execute(sql, (unique_id,))
@@ -756,11 +756,11 @@ def delete_row_implant_inventory(item: dict=Body(...)):
         return {"error" : "unique_id is required"}
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"DELETE FROM frbom WHERE unique_id = %s"
     cursor.execute(sql, (unique_id,))
@@ -782,11 +782,11 @@ def update_stent_bom(item: dict=Body(...)):
     values = list(update_fields.values()) + [unique_id]
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"UPDATE stentbom SET {set_clause} WHERE unique_id = %s"
     cursor.execute(sql, values)
@@ -802,11 +802,11 @@ def delete_row_implant_inventory(item: dict=Body(...)):
         return {"error" : "unique_id is required"}
 
     conn = mysql.connector.connect(
-        host = "localhost",
-        user = "root",
-        password = "Rajahmundry",
-        database = 'starlight_inventory'
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     sql = f"DELETE FROM stentbom WHERE unique_id = %s"
     cursor.execute(sql, (unique_id,))
@@ -819,11 +819,11 @@ def delete_row_implant_inventory(item: dict=Body(...)):
 def get_lots(part_numbers: List[str] = Query(...)):
     #print("Received request with:", part_numbers)
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rajahmundry",
-        database="starlight_inventory"
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
 
     format_strings = ','.join(['%s'] * len(part_numbers))
@@ -837,11 +837,11 @@ def get_lots(part_numbers: List[str] = Query(...)):
 @app.get("/lots-preview", response_model=List[Dict])
 def get_lots_preview(unique_ids: List[int] = Query(...)) -> List[Dict]:
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rajahmundry",
-        database="starlight_inventory"
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
 
     format_strings = ','.join(['%s'] * len(unique_ids))
@@ -858,11 +858,11 @@ def get_lots_preview(unique_ids: List[int] = Query(...)) -> List[Dict]:
 @app.get("/preview-inventory")
 def get_parts(ids: str):
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rajahmundry",
-        database="starlight_inventory"
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     id_list = [int(i.strip()) for i in ids.split(",")]
     placeholders = ','.join(['%s'] * len(id_list))
@@ -874,11 +874,11 @@ def get_parts(ids: str):
 @app.post("/update-quantities") #confirming the preview inventory
 def update_quantities(updates: List[dict]):
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rajahmundry",
-        database="starlight_inventory"
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor(dictionary=True)
     for update in updates:
         cursor.execute("UPDATE stent_lot_management_table SET quantity = %s WHERE id = %s", (update["new_quantity"], update["id"]))
@@ -893,11 +893,11 @@ class UpdateLotItem(BaseModel):
 def update_lots( user_id: str, items: List[UpdateLotItem],request: Request = None):
     ip = request.client.host
     conn = mysql.connector.connect(
-        host="localhost",
-        user="root",
-        password="Rajahmundry",
-        database="starlight_inventory"
-    )
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
     cursor = conn.cursor()
     print(user_id)
     for item in items:
