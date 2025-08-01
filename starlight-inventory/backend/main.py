@@ -37,7 +37,7 @@ app = FastAPI()
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["https://your-frontend.onrender.com"], 
+    allow_origins=["https://starlight-inventory.vercel.app"], 
     allow_credentials=True,
     allow_methods=["*"],  
     allow_headers=["*"],  
