@@ -2,7 +2,9 @@ import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useState } from "react"
 
-function UpdatePermissions(){
+const API_URL = import.meta.env.VITE_API_URL;
+
+function FRView(){
     const [data, setData] = useState([])
     const [dropdownPos, setDropdownPos] = useState([])
     const [editValue, setEditValue] = useState("")
@@ -12,12 +14,12 @@ function UpdatePermissions(){
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                const response = await fetch("http://localhost:8000/update-permissions")
+                const response = await fetch(`${API_URL}/fr-table-view`)
                 const result = await response.json()
                 setData(result)
             }
             catch(error){
-                console.error("Error fetching the users table", error)
+                console.error("Error fetching the frbom", error)
             }
         }
         fetchData()
@@ -35,7 +37,7 @@ function UpdatePermissions(){
     const row = data[rowIdx];
 
     try {
-      const res = await fetch(`http://localhost:8000/users-delete-row`, {
+      const res = await fetch(`${API_URL}/fr-delete-row`, {
         method: "DELETE",
         headers: {
         "Content-Type": "application/json",
@@ -68,7 +70,7 @@ function UpdatePermissions(){
         const row = data[rowIdx]
         const updatedRow = {...row, [colKey]: editValue}
         try {
-            const res = await fetch("http://localhost:8000/users-update", {
+            const res = await fetch(`${API_URL}/fr-update`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedRow),
@@ -100,8 +102,8 @@ function UpdatePermissions(){
     
     return (
         <div style={{padding:'2rem', color:'white', position:'relative'}}>
-            <h1>Users Table</h1>
-            <table border="1" style={{ borderCollapse: "collapse", width: "100%", marginBottom: "4rem"}}>
+            <h1>Flow Restrictor BOM Table View</h1>
+            <table border="1" style={{ borderCollapse: "collapse", width: "100%" }}>
                 <thead>
                     <tr>
                         {columns.map((key, index)=>(
@@ -183,4 +185,4 @@ function UpdatePermissions(){
     )
 }
 
-export default UpdatePermissions
+export default FRView

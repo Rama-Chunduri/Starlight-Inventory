@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 
-
 const levelHeights = {
       Level1: -200,
       Level2: -100,
@@ -38,7 +37,7 @@ const FRGView = () => {
 useEffect(() => {
   const fetchData = async () => {
     try {
-      const res = await fetch("http://localhost:8000/fr-bom-graph-view");
+      const res = await fetch(`${API_URL}/fr-bom-graph-view`);
       const data = await res.json();
       console.log("Fetched data:", data);
 

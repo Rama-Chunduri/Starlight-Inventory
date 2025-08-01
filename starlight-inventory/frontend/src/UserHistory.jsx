@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useState } from "react"
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function UserHistory(){
     const [data, setData] = useState([])
     const navigate = useNavigate()
@@ -9,7 +11,7 @@ function UserHistory(){
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                const response = await fetch("http://localhost:8000/user-history-table")
+                const response = await fetch(`${API_URL}/user-history-table`)
                 const result = await response.json()
                 setData(result)
             }

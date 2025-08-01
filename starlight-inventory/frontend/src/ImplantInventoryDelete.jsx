@@ -2,6 +2,8 @@ import { useState } from "react"
 import CustomDropDown from "./CustomDropDown";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function ImplantInventoryDelete(){
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ function ImplantInventoryDelete(){
         const filteredData = Object.fromEntries(
             Object.entries(formData).filter(([key,value]) => value !== '')
         )
-        const response = await fetch('http://localhost:8000/delete-data', {
+        const response = await fetch(`${API_URL}/delete-data`, {
             method: "POST", 
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify(filteredData)

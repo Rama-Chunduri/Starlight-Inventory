@@ -1,5 +1,7 @@
 import traveler from "./assets/Traveler.png";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Traveler(){
 const generateDoc = async () => {
   const response = await fetch('http://localhost:3001/generate-doc', {

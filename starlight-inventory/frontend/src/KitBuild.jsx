@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function KitBuild(){
     const [selectedKits, setSelectedKits] = useState([])
     const [builds, setBuilds] = useState([])
     useEffect(()=>{
         const fetchBuilds = async () =>{
             try{
-                const res = await fetch("http://localhost:8000/kits");
+                const res = await fetch(`${API_URL}/kits`);
                 const data = await res.json();
                 setBuilds(data)
             }

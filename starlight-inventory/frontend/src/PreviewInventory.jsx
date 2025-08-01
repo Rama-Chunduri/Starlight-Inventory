@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function PreviewInventory(lot) {
   const location = useLocation();
   const selectedIds = location.state?.selectedIds || [];
@@ -16,7 +18,7 @@ function PreviewInventory(lot) {
     const params = new URLSearchParams();
     selectedIds.forEach(id => params.append("unique_ids", id));
 
-    fetch(`http://localhost:8000/lots-preview?${params.toString()}`)
+    fetch(`${API_URL}/lots-preview?${params.toString()}`)
       .then(res => res.json())
       .then(data => {
         setLotPreviewData(data);
@@ -51,7 +53,7 @@ function PreviewInventory(lot) {
       }
     });
 
-    fetch(`http://localhost:8000/update-lots?user_id=${username}`, {
+    fetch(`${API_URL}/update-lots?user_id=${username}`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)

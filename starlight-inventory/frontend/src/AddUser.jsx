@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function AddUser(){
     const [username, setUsername] = useState("");
     const [firstname, setFirstName] = useState("");
@@ -8,7 +10,7 @@ function AddUser(){
     const navigate = useNavigate()
 
     const newUser = async () => {
-        const response = await fetch('http://localhost:8000/add-user', {
+        const response = await fetch(`${API_URL}/add-user`, {
             method: "POST",
             headers: {"Content-Type": "application/json"},
             body: JSON.stringify({ firstname, lastname, username})

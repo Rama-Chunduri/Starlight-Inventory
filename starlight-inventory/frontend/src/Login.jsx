@@ -2,6 +2,8 @@ import './Login.css'
 import {useNavigate} from 'react-router-dom'
 import {useState} from 'react'
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function Login(){
     const [username, setUsername] = useState('')
     const [password, setPassword] = useState('')

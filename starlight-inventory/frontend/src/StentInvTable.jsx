@@ -1,27 +1,38 @@
 import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useState } from "react"
+import quantities from "./quantities"
 
-function ImplantInventoryView(){
+const API_URL = import.meta.env.VITE_API_URL;
+
+function StentInvTable(){
     const [data, setData] = useState([])
     const [dropdownPos, setDropdownPos] = useState([])
     const [editValue, setEditValue] = useState("")
     const [editingCell, setEditingCell] = useState("")
+    
     const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                const response = await fetch("http://localhost:8000/implant-inventory-view")
+                const response = await fetch(`${API_URL}/stent-inventory-table-view`)
                 const result = await response.json()
                 setData(result)
             }
             catch(error){
-                console.error("Error fetching the implant inventory", error)
+                console.error("Error fetching the stent inventory", error)
             }
         }
         fetchData()
     }, [])
+
+        const lowQuantityComponents = data
+            .filter(row => {
+            const q = quantities.find(q => q.name === row.description);
+            return q && parseInt(row.quantity) < q.low_quantity})
+            .map(row => row.description); 
+        console.log(lowQuantityComponents)
 
     const handleCellClick = (e, rowIdx, colKey) => {
         e.stopPropagation()
@@ -35,12 +46,12 @@ function ImplantInventoryView(){
     const row = data[rowIdx];
 
     try {
-      const res = await fetch(`http://localhost:8000/implant-inventory-delete-row`, {
+      const res = await fetch(`h${API_URL}/stent-inventory-delete-row`, {
         method: "DELETE",
         headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ unique_id: row.unique_id }),
+      body: JSON.stringify({ id: row.id }),
       });
       if (!res.ok) throw new Error("Delete failed");
       setData(data.filter((_, idx) => idx !== rowIdx));
@@ -68,7 +79,7 @@ function ImplantInventoryView(){
         const row = data[rowIdx]
         const updatedRow = {...row, [colKey]: editValue}
         try {
-            const res = await fetch("http://localhost:8000/implant-inventory-update", {
+            const res = await fetch(`${API_URL}/stent-inventory-update`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedRow),
@@ -97,29 +108,31 @@ function ImplantInventoryView(){
 
     if (data.length === 0) return <div>Loading...</div>;
     const columns = Object.keys(data[0]);
+
     
     return (
-        <div style={{padding:'2rem', color:'white', position:'relative'}}>
-            <h1>Implant Inventory Table</h1>
-            <table border="1" style={{ borderCollapse: "collapse", width: "100%", marginBottom: "4rem"}}>
+        <div style={{padding:'2rem', color:'white', position:'relative', marginBottom: '4rem'}}>
+            <h1>Stent Inventory Table</h1>
+            <table border="1" style={{ borderCollapse: "collapse", width: "100%" }}>
                 <thead>
                     <tr>
-                        {columns.map((key, index)=>(
-                            <th key={index} style={{ padding: "0.5rem" }}>{key}</th>
+                        {columns.map((key) => (
+                            <th key={key} style={{ padding: "0.5rem" }}>{key}</th>
                         ))}
+
                     </tr>
                 </thead>
                 <tbody>
                     {data.map((row,idx)=>(
-                        <tr key={row.unique_id}>
+                        <tr key={row.id}>
                             {columns.map((colKey)=>{
                                 const isEditing = 
                                     editingCell && 
                                     editingCell.rowIdx === idx && 
                                     editingCell.colKey === colKey
                                     return(
-                                        <td
-                                            key={colKey}
+                                       <td
+                                            key={`${row.id}-${colKey}`}  
                                             onClick={(e) => !isEditing && handleCellClick(e, idx, colKey)}
                                             style={{ cursor: isEditing ? "auto" : "pointer", padding: "0.5rem"}}
                                         >
@@ -179,8 +192,41 @@ function ImplantInventoryView(){
                     </div>
                 </div>
             )}
+            <div style={{
+                position: "fixed",
+                top: "1rem",
+                right: "1rem",
+                backgroundColor: "pink",
+                borderRadius: "8px",
+                padding: "1rem"
+            }}>
+                <h1 style={{
+                    color: "#173D62",
+                    backgroundColor: "pink",
+                    fontSize: "2rem",
+                    marginTop: "2rem"
+                }}>
+                Low Inventory Components
+                </h1>
+
+                <ul style={{
+                    backgroundColor: "pink",
+                    padding: "1rem",
+                    color: "#173D62",
+                    borderRadius: "8px"
+                }}>
+                    {lowQuantityComponents.length === 0 ? (
+                    <li style={{backgroundColor: "pink"}}>No low inventory components</li>
+                ) : (
+                    lowQuantityComponents.map((name) => (
+                    <li key={name} style={{ backgroundColor: "pink" }}>{name}</li>
+                    ))
+                    )}
+                </ul>
+            </div>
+
         </div>
     )
 }
 
-export default ImplantInventoryView
+export default StentInvTable

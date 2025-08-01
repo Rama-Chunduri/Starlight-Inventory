@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom"
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function SignUp(){
     const [firstname, setFirstName] = useState("")
     const [lastname, setLastName] = useState("")
@@ -9,7 +11,7 @@ function SignUp(){
     const navigate = useNavigate()
 
     const  handleSignUp = async () => {
-      const response = await fetch("http://localhost:8000/signup", {
+      const response = await fetch(`${API_URL}/signup`, {
         method: "POST",
         headers: {"Content-Type": "application/json"},
         body: JSON.stringify({ firstname, lastname, username, password })

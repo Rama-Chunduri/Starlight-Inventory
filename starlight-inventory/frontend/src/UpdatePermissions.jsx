@@ -2,29 +2,28 @@ import { useNavigate } from "react-router-dom"
 import { useEffect } from "react"
 import { useState } from "react"
 
-function StentBOMLots(){
+const API_URL = import.meta.env.VITE_API_URL;
+
+function UpdatePermissions(){
     const [data, setData] = useState([])
     const [dropdownPos, setDropdownPos] = useState([])
     const [editValue, setEditValue] = useState("")
     const [editingCell, setEditingCell] = useState("")
-    const [rejectState, setRejectState] = useState("all");
-    
     const navigate = useNavigate()
 
     useEffect(()=>{
         const fetchData = async () => {
             try{
-                const response = await fetch(`http://localhost:8000/stent-lots-table-view?rejectState=${rejectState}`)
+                const response = await fetch(`${API_URL}/update-permissions`)
                 const result = await response.json()
                 setData(result)
             }
             catch(error){
-                console.error("Error fetching the stent inventory", error)
+                console.error("Error fetching the users table", error)
             }
         }
         fetchData()
-    }, [rejectState])
-
+    }, [])
 
     const handleCellClick = (e, rowIdx, colKey) => {
         e.stopPropagation()
@@ -38,7 +37,7 @@ function StentBOMLots(){
     const row = data[rowIdx];
 
     try {
-      const res = await fetch(`http://localhost:8000/stent-lots-delete-row`, {
+      const res = await fetch(`${API_URL}/users-delete-row`, {
         method: "DELETE",
         headers: {
         "Content-Type": "application/json",
@@ -71,7 +70,7 @@ function StentBOMLots(){
         const row = data[rowIdx]
         const updatedRow = {...row, [colKey]: editValue}
         try {
-            const res = await fetch("http://localhost:8000/stent-lots-update", {
+            const res = await fetch(`${API_URL}/users-update`, {
                 method: "PUT",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(updatedRow),
@@ -97,26 +96,19 @@ function StentBOMLots(){
         window.addEventListener("click", handleClickOutside)
         return () => window.removeEventListener("click", handleClickOutside)
     }, [])
-    //console.log(data)
-    if (data.length === 0) return <div style={{marginLeft: "40rem", fontSize: "5rem"}}>Loading...</div>;
-    const columns = Object.keys(data[0]);
 
+    if (data.length === 0) return <div>Loading...</div>;
+    const columns = Object.keys(data[0]);
     
     return (
         <div style={{padding:'2rem', color:'white', position:'relative'}}>
-            <div style={{display: "flex", flexDirection: "row"}}>
-                <button style={{backgroundColor: "#BDC1C3", color: "#173D62", margin: "1rem"}} onClick={()=>setRejectState("reject")}>See Rejects</button>
-                <button style={{backgroundColor: "#BDC1C3", color: "#173D62", margin: "1rem"}} onClick={()=>setRejectState("accept")}>See Accepts</button>
-                <button style={{backgroundColor: "#BDC1C3", color: "#173D62", margin: "1rem"}} onClick={()=>setRejectState("all")}>See All</button>
-            </div>
-            <h1>Stent Lots Table</h1>
-            <table border="1" style={{ borderCollapse: "collapse", width: "100%" }}>
+            <h1>Users Table</h1>
+            <table border="1" style={{ borderCollapse: "collapse", width: "100%", marginBottom: "4rem"}}>
                 <thead>
                     <tr>
-                        {columns.map((key) => (
-                            <th key={key} style={{ padding: "0.5rem" }}>{key}</th>
+                        {columns.map((key, index)=>(
+                            <th key={index} style={{ padding: "0.5rem" }}>{key}</th>
                         ))}
-
                     </tr>
                 </thead>
                 <tbody>
@@ -128,8 +120,8 @@ function StentBOMLots(){
                                     editingCell.rowIdx === idx && 
                                     editingCell.colKey === colKey
                                     return(
-                                       <td
-                                            key={`${row.unique_id}-${colKey}`}  
+                                        <td
+                                            key={colKey}
                                             onClick={(e) => !isEditing && handleCellClick(e, idx, colKey)}
                                             style={{ cursor: isEditing ? "auto" : "pointer", padding: "0.5rem"}}
                                         >
@@ -189,9 +181,8 @@ function StentBOMLots(){
                     </div>
                 </div>
             )}
-
         </div>
     )
 }
 
-export default StentBOMLots
+export default UpdatePermissions

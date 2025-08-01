@@ -14,7 +14,7 @@ function Dashboard() {
       if (!token) return;
 
       try {
-        const res = await axios.get("http://localhost:8000/me", {
+        const res = await axios.get(`${API_URL}/me`, {
           headers: {
             Authorization: `Bearer ${token}`,
           },

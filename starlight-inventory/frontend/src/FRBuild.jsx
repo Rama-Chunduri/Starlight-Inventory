@@ -2,6 +2,8 @@ import { useNavigate } from "react-router-dom";
 import {useState, useEffect} from "react"
 import './Dashboard.css'
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function FRBuild(){
   const [selectedKitIds, setSelectedKitIds] = useState([]);
   const [kitsData, setKitsData] = useState([]);
@@ -54,7 +56,7 @@ function FRBuild(){
     }
 
     const query = selectedKitIds.join(",");
-    fetch(`http://localhost:8000/frkits?ids=${query}`)
+    fetch(`${API_URL}/frkits?ids=${query}`)
       .then((res) => res.json())
       .then((data) => setKitsData(data));
   }, [selectedKitIds]);

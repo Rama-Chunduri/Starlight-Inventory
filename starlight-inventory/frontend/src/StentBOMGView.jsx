@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import ForceGraph2D from "react-force-graph-2d";
 
+const API_URL = import.meta.env.VITE_API_URL;
 
 const levelHeights = {
       Level1: -400,
@@ -41,7 +42,7 @@ const StentBOMGView = () => {
 
     const fetchData = async () => {
   try {
-    const res = await fetch("http://localhost:8000/stent-bom-graph-view");
+    const res = await fetch(`${API_URL}/stent-bom-graph-view`);
     const data = await res.json();
 
     // Group nodes by label (level)
@@ -86,9 +87,6 @@ const StentBOMGView = () => {
         Level8: "#7f7f7f",   
         Level9: "#bcbd22",  
     };
-
-    
-
 
     const displayLabels = {
         id: "ID",

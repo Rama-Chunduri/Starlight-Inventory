@@ -1,6 +1,8 @@
 import { useState } from "react"
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function StentBOMBuild(){
     const [quantity, setQuantity] = useState(0);
     const [partNumber, setPartNumber] = useState("");

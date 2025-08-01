@@ -2,6 +2,8 @@ import { useState } from "react"
 import CustomDropDown from "./CustomDropDown";
 import { useNavigate } from "react-router-dom";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 function AddLots(){
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
@@ -31,7 +33,7 @@ function AddLots(){
 
     const handleCSV = async (csvText) => {
         console.log("Sending CSV text to backend:", csvVal);
-        const response = await fetch('http://localhost:8000/add-csv-lots', {
+        const response = await fetch(`${API_URL}/add-csv-lots`, {
             method: "POST",
             headers: {
             'Content-Type': 'application/json',
@@ -53,7 +55,7 @@ function AddLots(){
     console.log(formData);
 
     const handleSubmit = async () => {
-        const response = await fetch('http://localhost:8000/add-data-lots', {
+        const response = await fetch(`${API_URL}/add-data-lots`, {
             method: "POST",
             headers: {
             'Content-Type': 'application/json',
