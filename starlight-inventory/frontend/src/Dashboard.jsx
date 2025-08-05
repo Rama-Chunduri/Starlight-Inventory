@@ -34,7 +34,7 @@ function Dashboard() {
   }, []);
     return(
         <div>
-            <h1 style={{marginLeft: '38rem', marginTop: '5rem'}}>Welcome, {name.first_name} {name.last_name}</h1>
+            <h1 className='welcome'>Welcome, {name.first_name} {name.last_name}</h1>
             <div className="flex-box-dash">
                 <button onClick={()=>navigate('/implant-inventory')} className="flex-item-dash">Implant Inventory</button>
                 <button onClick={()=>navigate('/stent-bom')} className="flex-item-dash">Stent BOM</button>
