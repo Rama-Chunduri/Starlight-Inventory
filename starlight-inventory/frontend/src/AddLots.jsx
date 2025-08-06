@@ -1,6 +1,7 @@
 import { useState } from "react"
 import CustomDropDown from "./CustomDropDown";
 import { useNavigate } from "react-router-dom";
+import DashboardButton from "./DashboardButton";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
@@ -66,6 +67,7 @@ function AddLots(){
 
     return(
     <div style={{display:'flex', flexDirection: 'column'}}>
+        <DashboardButton/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter a csv file</h1>
         <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62", borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="file" accept=".csv" name="csv" placeholder="Enter a csv file:" onChange={handleFileChange}/>
         <button style={{marginLeft: '2rem', marginTop: '2rem', backgroundColor: '#BDC1C3', color: '#173D62'}} onClick={()=>{handleCSV(csvVal); navigate('/stent-bom-lots')}}>Submit</button>
