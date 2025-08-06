@@ -5,8 +5,8 @@ function DashboardButton(){
     return(
         <button onClick={()=>navigate('/dashboard')}
                 styles={{
-                    marginLeft: '2rem', 
-                    marginTop: '2rem', 
+                    marginLeft: '85vh', 
+                    marginTop: '4vh', 
                     backgroundColor: '#BDC1C3', 
                     color: '#173D62', 
                     marginBottom: '5vh'
