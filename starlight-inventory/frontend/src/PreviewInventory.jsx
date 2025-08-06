@@ -116,7 +116,8 @@ function PreviewInventory(lot) {
 
 const cellStyle = {
   border: "1px solid black",
-  padding: "0.5rem"
+  padding: "0.5rem",
+  color: "white",
 };
 
 const buttonStyle = {
@@ -125,7 +126,7 @@ const buttonStyle = {
   color: "#173D62",
   fontSize: "1.2rem",
   padding: "0.5rem 1rem",
-  borderRadius: "8px"
+  borderRadius: "8px",
 };
 
 export default PreviewInventory;
