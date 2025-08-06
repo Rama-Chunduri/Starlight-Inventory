@@ -22,7 +22,7 @@ function FinishedGoods(){
         fetchData()
     }, [])
 
-    if (data.length === 0) return <div>Loading...</div>;
+    if (data.length === 0) return <div style={{marginLeft: "40rem", fontSize: "5vh"}}>Loading...</div>;
     const columns = Object.keys(data[0]);
     
     return (

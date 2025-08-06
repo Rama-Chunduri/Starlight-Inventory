@@ -109,7 +109,7 @@ function StentBOMTView(){
         return () => window.removeEventListener("click", handleClickOutside)
     }, [])
 
-    if (data.length === 0) return <div style={{marginLeft: "30rem", size: "3rem"}}>Loading...</div>;
+    if (data.length === 0) return <div style={{marginLeft: "40vh", size: "5vh"}}>Loading...</div>;
     const columns = Object.keys(data[0]);
     
     return (

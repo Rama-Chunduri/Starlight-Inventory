@@ -64,8 +64,6 @@ function AddLots(){
         })
     }
 
-   
-
     return(
     <div style={{display:'flex', flexDirection: 'column'}}>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter a csv file</h1>
