@@ -1,17 +1,17 @@
 .flex-box-dash{
     display: flex;
     flex-direction: column;
-    margin-left: 30rem;
+    margin-left: 20vh;
 }
  .flex-item-dash{
     background-color: #BDC1C3;
     color: #173D62;
-    font-size: 5rem;
-    margin: 2rem;
+    font-size: 5vh;
+    margin: 2vh;
  }
 
  .welcome{
-    margin-left: '38rem';
-    margin-top: '5rem';
+    margin-left: 25vh;
+    margin-top: 5vh;
     color: "white";
 }

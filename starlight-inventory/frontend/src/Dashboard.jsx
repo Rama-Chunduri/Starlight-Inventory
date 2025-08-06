@@ -2,7 +2,8 @@ import './Dashboard.css'
 import { useNavigate, useLocation } from 'react-router-dom'
 import { useEffect, useState } from 'react';
 import axios from "axios";
- 
+
+const API_URL = import.meta.env.VITE_API_URL;
 
 function Dashboard() {
     const navigate = useNavigate()
