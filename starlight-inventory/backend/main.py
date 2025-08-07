@@ -593,7 +593,7 @@ async def delete_from_database(filter: dict = Body(...)):
            user = "sql3793170",
            password = "5iBG4dCytH",
            database = "sql3793170"
-       )
+    )
     where_clause = " AND ".join([f"{key} = %s" for key in filter])
     sql = f"DELETE FROM implant_inventory WHERE {where_clause}"
     cursor = conn.cursor()
@@ -897,7 +897,7 @@ def update_lots( user_id: str, items: List[UpdateLotItem],request: Request = Non
            user = "sql3793170",
            password = "5iBG4dCytH",
            database = "sql3793170"
-       )
+    )
     cursor = conn.cursor()
     print(user_id)
     for item in items:

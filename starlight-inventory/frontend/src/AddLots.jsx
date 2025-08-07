@@ -42,6 +42,12 @@ function AddLots(){
             body: JSON.stringify({csv: csvText})
         })
         setCsvVal(csvText)
+        const result = await response.json();
+        if (response.ok) {
+            navigate('/stent-bom-lots');
+        } else {
+            alert("Error submitting lot: " + result.error);
+        }
     }
 
     const handleFileChange = (e) => {
@@ -76,9 +82,9 @@ function AddLots(){
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Receiving Lot Number</h1>
         <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem',color: "#173D62", borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="lot_name" placeholder="Enter receiving lot number:" value={formData.receiving_lot_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Receipt Date</h1>
-        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="quantity" placeholder="Enter receipt date:" value={formData.receipt_date} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="receipt_date" placeholder="Enter receipt date:" value={formData.receipt_date} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter PO #</h1>
-        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="quantity" placeholder="Enter po number:" value={formData.po_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="po_number" placeholder="Enter po number:" value={formData.po_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Part Number</h1>
          <CustomDropDown
             name="part_number"
@@ -103,7 +109,7 @@ function AddLots(){
             allowCustomInput={false}
         />
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Revision</h1>
-        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="revision" placeholder="Enter revision:" value={formData.rev} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="rev" placeholder="Enter revision:" value={formData.rev} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Description</h1>
         <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="description" placeholder="Enter revision:" value={formData.description} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Supplier Name</h1>
@@ -118,11 +124,11 @@ function AddLots(){
             allowCustomInput={true}
         />
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Supplier Lot Number</h1>
-        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="revision" placeholder="Enter supplier lot number:" value={formData.supplier_lot_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="supplier_lot_number" placeholder="Enter supplier lot number:" value={formData.supplier_lot_number} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Quantity</h1>
         <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="quantity" placeholder="Enter quantity:" value={formData.quantity} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Expiration Date</h1>
-        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="expiration date" placeholder="Enter expiration date:" value={formData.expiration_date} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
+        <input style={{marginLeft: '2rem', fontSize: '1rem', backgroundColor: '#BDC1C3', padding: '0.5rem', color: "#173D62",borderRadius: '8px', width: '100%', maxHeight: '150px', overflowY: 'auto', border: '1px solid #ccc'}} type="text" name="expiration_date" placeholder="Enter expiration date:" value={formData.expiration_date} onChange={(e) => handleChange(e.target.name, e.target.value)}/>
         <h1 style={{fontSize: '2rem', marginLeft: '2rem'}}>Enter Human Use</h1>
        <CustomDropDown
             name="human_use"
