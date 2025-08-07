@@ -572,12 +572,13 @@ async def add_csv_to_database_lots(request: Request):
            database = "sql3793170"
        )
     df = pd.read_csv(csv_file_like)
+    df = df.where(pd.notnull(df), None)
     columnns = ','.join(df.columns)
     placeholders = ','.join(['%s']*len(df.columns))
     cursor = conn.cursor()
     sql = f"""INSERT INTO stent_lot_management_table (receiving_lot_number, receipt_date, po_number, part_number, rev, description, supplier_name, supplier_lot_number, quantity, expiration_date, human_use, lot_issued_by, status, comments) VALUES ({placeholders})"""
     
-    for index, row in df.iterrows():
+    for _, row in df.iterrows():
         cursor.execute(sql, tuple(row))
     conn.commit()
     cursor.close()
