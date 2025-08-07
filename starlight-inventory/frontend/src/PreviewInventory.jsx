@@ -100,7 +100,7 @@ function PreviewInventory(lot) {
         </tbody>
       </table>
 
-      <button onClick={()=>{handleConfirm; navigate('/traveler', {
+      <button onClick={()=>{handleConfirm(); navigate('/traveler', {
         state: {
           lotPreviewData
         }
