@@ -40,6 +40,12 @@ function ImplantInventoryInsert(){
             body: JSON.stringify({csv: csvText})
         })
         setCsvVal(csvText)
+        const result = await response.json();
+        if (response.ok) {
+            navigate('/implant-inventory-view');
+        } else {
+            alert("Error submitting lot: " + result.error);
+        }
     }
 
     const handleFileChange = (e) => {
@@ -63,7 +69,7 @@ function ImplantInventoryInsert(){
         })
         const result = await response.json();
         if (response.ok) {
-            navigate('/stent-bom-lots');
+            navigate('/implant-inventory-view');
         } else {
             alert("Error submitting lot: " + result.error);
         }
