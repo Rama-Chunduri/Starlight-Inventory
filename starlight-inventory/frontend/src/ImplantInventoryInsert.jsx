@@ -61,8 +61,14 @@ function ImplantInventoryInsert(){
             },
             body: JSON.stringify(formData)
         })
+        const result = await response.json();
+        if (response.ok) {
+            navigate('/stent-bom-lots');
+        } else {
+            alert("Error submitting lot: " + result.error);
+        }
     }
-
+    
    
 
     return(
