@@ -9,7 +9,7 @@ function Traveler(){
   const generateDoc = async () => {
     const existingPdfBytes = await fetch(LHR_template).then(res => res.arrayBuffer());
     const pdfDoc = await PDFDocument.load(existingPdfBytes);
-    const font = await pdfDoc.embedFont(StandardFonts.Arial);
+    const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
     const { height } = firstPage.getSize();
