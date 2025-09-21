@@ -16,8 +16,8 @@ function Traveler(){
     const { height } = firstPage.getSize();
 
     secondPage.drawText("filled", {
-      x: 420,
-      y: height - 300,
+      x: 415,
+      y: height - 350,
       size: 14,
       font,
       color: rgb(0, 0, 0),
