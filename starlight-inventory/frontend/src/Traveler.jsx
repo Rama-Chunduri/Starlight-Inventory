@@ -46,7 +46,6 @@ const generateDoc = async () => {
                 marginLeft: "35rem",
                 borderRadius: "8px",
                 padding: "2rem",
-                marginLeft: "45rem"
             }}>
                 <h1 style={{color: "#173D62", backgroundColor: "white", fontSize: "3rem"}}>The Traveler</h1>
                 <img style={{ width: "500px", height: "auto" }} src={traveler} alt="the traveler" />

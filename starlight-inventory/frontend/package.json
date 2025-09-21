@@ -16,6 +16,7 @@
     "express": "^5.1.0",
     "googleapis": "^154.1.0",
     "neovis.js": "^2.1.0",
+    "pdf-lib": "^1.17.1",
     "react": "^19.1.0",
     "react-dom": "^19.1.0",
     "react-force-graph": "^1.48.0",
