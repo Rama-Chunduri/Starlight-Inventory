@@ -1,41 +1,50 @@
 import traveler from "./assets/Traveler.png";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
+import LHR_template from "../LHR_template.pdf";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Traveler(){
 
-const generateDoc = async () => {
-  // Create a new PDF
-  const pdfDoc = await PDFDocument.create();
-  const page = pdfDoc.addPage([600, 400]);
-  const { height } = page.getSize();
+  const generateDoc = async () => {
+    const existingPdfBytes = await fetch(LHR_template).then(res => res.arrayBuffer());
+    const pdfDoc = await PDFDocument.load(existingPdfBytes);
+    const font = await pdfDoc.embedFont(StandardFonts.Arial);
+    const pages = pdfDoc.getPages();
+    const firstPage = pages[0];
+    const { height } = firstPage.getSize();
 
-  // Load a font
-  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+    firstPage.drawText("Alice", {
+      x: 120,
+      y: height - 150,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
 
-  // Add text
-  page.drawText("Course Information", {
-    x: 50,
-    y: height - 50,
-    size: 20,
-    font,
-    color: rgb(0.1, 0.2, 0.5),
-  });
+    firstPage.drawText("34", {
+      x: 300,
+      y: height - 150,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
 
-  page.drawText(`Course: Data Structures and Algorithms`, { x: 50, y: height - 100, size: 14, font });
-  page.drawText(`Time: MW 2-3`, { x: 50, y: height - 130, size: 14, font });
-  page.drawText(`Start Date: 2025-08-01`, { x: 50, y: height - 160, size: 14, font });
+    firstPage.drawText("2025-08-01", {
+      x: 120,
+      y: height - 180,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
 
-  // Serialize to bytes
-  const pdfBytes = await pdfDoc.save();
+    // 6. Save the filled PDF
+    const pdfBytes = await pdfDoc.save();
+    const blob = new Blob([pdfBytes], { type: "application/pdf" });
+    const url = URL.createObjectURL(blob);
 
-  // Open PDF in new tab
-  const blob = new Blob([pdfBytes], { type: "application/pdf" });
-  const url = URL.createObjectURL(blob);
-  window.open(url, "_blank");
-};
-
+    window.open(url, "_blank");
+  };
 
         return(
             <div style={{
