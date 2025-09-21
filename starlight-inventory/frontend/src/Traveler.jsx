@@ -12,11 +12,12 @@ function Traveler(){
     const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
+    const secondPage = pages[1];
     const { height } = firstPage.getSize();
 
-    firstPage.drawText("Alice", {
-      x: 120,
-      y: height - 150,
+    secondPage.drawText("filled", {
+      x: 420,
+      y: height - 300,
       size: 14,
       font,
       color: rgb(0, 0, 0),
