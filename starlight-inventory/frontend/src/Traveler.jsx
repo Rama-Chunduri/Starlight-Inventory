@@ -17,19 +17,19 @@ function Traveler(){
 
     secondPage.drawText("filled", {
       x: 417,
-      y: height - 400,
+      y: height - 350,
       size: 14,
       font,
       color: rgb(0, 0, 0),
     });
 
-    firstPage.drawText("34", {
-      x: 300,
-      y: height - 150,
+   /* secondPage.drawText("filled", {
+      x: 517,
+      y: height - 399,
       size: 14,
       font,
       color: rgb(0, 0, 0),
-    });
+    });*/
 
     firstPage.drawText("2025-08-01", {
       x: 120,
