@@ -1,25 +1,41 @@
 import traveler from "./assets/Traveler.png";
+import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Traveler(){
+
 const generateDoc = async () => {
-  const response = await fetch('http://localhost:3001/generate-doc', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      templateId: '1kDWd571zC1Vbtdxx2N-maKFf05_-xZvBMv6xluf9UkE',
-      replacements: {
-        '{{PATIENT}}': 'Alice',
-        '{{AGE}}': '34',
-        '{{SURGERY_DATE}}': '2025-08-01',
-      }
-    }),
+  // Create a new PDF
+  const pdfDoc = await PDFDocument.create();
+  const page = pdfDoc.addPage([600, 400]);
+  const { height } = page.getSize();
+
+  // Load a font
+  const font = await pdfDoc.embedFont(StandardFonts.Helvetica);
+
+  // Add text
+  page.drawText("Course Information", {
+    x: 50,
+    y: height - 50,
+    size: 20,
+    font,
+    color: rgb(0.1, 0.2, 0.5),
   });
 
-  const data = await response.json();
-  window.open(data.docUrl, '_blank'); // Opens the editable Google Doc
+  page.drawText(`Course: Data Structures and Algorithms`, { x: 50, y: height - 100, size: 14, font });
+  page.drawText(`Time: MW 2-3`, { x: 50, y: height - 130, size: 14, font });
+  page.drawText(`Start Date: 2025-08-01`, { x: 50, y: height - 160, size: 14, font });
+
+  // Serialize to bytes
+  const pdfBytes = await pdfDoc.save();
+
+  // Open PDF in new tab
+  const blob = new Blob([pdfBytes], { type: "application/pdf" });
+  const url = URL.createObjectURL(blob);
+  window.open(url, "_blank");
 };
+
 
         return(
             <div style={{
@@ -50,3 +66,4 @@ const generateDoc = async () => {
 }
 
 export default Traveler;
+
