@@ -13,6 +13,7 @@ function Traveler(){
     const pages = pdfDoc.getPages();
     const firstPage = pages[0];
     const secondPage = pages[1];
+    const fourthPage = pages[3];
     const { height } = firstPage.getSize();
 
     secondPage.drawText("filled", {
@@ -25,7 +26,7 @@ function Traveler(){
 
     secondPage.drawText("filled", {
       x: 590,
-      y: height - 399,
+      y: height - 410,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -33,11 +34,27 @@ function Traveler(){
 
     secondPage.drawText("filled", {
       x: 590,
-      y: height - 450,
+      y: height - 449,
       size: 14,
       font,
       color: rgb(0, 0, 0),
     });
+
+    fourthPage.drawText("filled", {
+      x: 590,
+      y: height - 300,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    fourthPage.drawText("filled", {
+      x: 590,
+      y: height - 360,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
 
     // 6. Save the filled PDF
     const pdfBytes = await pdfDoc.save();
