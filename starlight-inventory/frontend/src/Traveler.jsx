@@ -24,7 +24,7 @@ function Traveler(){
     });
 
     secondPage.drawText("filled", {
-      x: 445,
+      x: 550,
       y: height - 399,
       size: 14,
       font,
