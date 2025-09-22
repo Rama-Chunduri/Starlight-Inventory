@@ -1,10 +1,17 @@
 import traveler from "./assets/Traveler.png";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import LHR_template from "../LHR_template.pdf";
+import { useLocation } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Traveler(){
+  const location = useLocation();
+  const lotPreviewData = location.state?.lotPreviewData || [];
+  function getLotNumber(partNumber, lotPreviewData) {
+  const lot = lotPreviewData.find(l => l.part_number === partNumber);
+  return lot ? lot.receiving_lot_number : "N/A";
+}
 
   const generateDoc = async () => {
     const existingPdfBytes = await fetch(LHR_template).then(res => res.arrayBuffer());
@@ -20,14 +27,15 @@ function Traveler(){
     const thirteenthPage = pages[12];
     const { height } = firstPage.getSize();
 
-    secondPage.drawText("filled", {
+   /*secondPage.drawText("filled", {
       x: 417,
       y: height - 349,
       size: 14,
       font,
       color: rgb(0, 0, 0),
     });
-
+*/
+    const lot_no = getLotNumber("MS-00-50002", lotPreviewData)
     secondPage.drawText("filled", {
       x: 590,
       y: height - 410,
@@ -36,7 +44,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 
-    secondPage.drawText("filled", {
+    secondPage.drawText(lot_no, {
       x: 590,
       y: height - 449,
       size: 14,
@@ -164,7 +172,6 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    // 6. Save the filled PDF
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
