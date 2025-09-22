@@ -35,7 +35,22 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 */
-    const lot_no = getLotNumber("MS-00-50002", lotPreviewData)
+    const lot_no_1 = getLotNumber("MS-00-50002", lotPreviewData)
+    const lot_no_2 = getLotNumber("STR-DA2-CA-10001", lotPreviewData)
+    const lot_no_3 = getLotNumber("MS-DA2-50002", lotPreviewData)
+    const lot_no_4 = getLotNumber("MS-DA2-50003", lotPreviewData)
+    const lot_no_5 = getLotNumber("MS-00-50003", lotPreviewData)
+    const lot_no_6 = getLotNumber("MS-00-50014", lotPreviewData)
+    const lot_no_7 = getLotNumber("LBL-DA2-0001", lotPreviewData)
+    const lot_no_8 = getLotNumber("STR-DA2-PK-30007", lotPreviewData)
+    const lot_no_9 = getLotNumber("STR-DA2-PK-30006", lotPreviewData)
+    const lot_no_10 = getLotNumber("STR-DA2-PK-30004", lotPreviewData)
+    const lot_no_11 = getLotNumber("LBL-DA2-0005", lotPreviewData)
+    const lot_no_12 = getLotNumber("LBL-DA2-0004", lotPreviewData)
+    const lot_no_13 = getLotNumber("MS-00-50012", lotPreviewData)
+    const lot_no_14 = getLotNumber("MS-00-50013", lotPreviewData)
+    const lot_no_15 = getLotNumber("STR-DA2-PK-30003", lotPreviewData)
+
     secondPage.drawText("filled", {
       x: 590,
       y: height - 410,
@@ -44,7 +59,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 
-    secondPage.drawText(lot_no, {
+    secondPage.drawText("filled", {
       x: 590,
       y: height - 449,
       size: 14,
@@ -52,7 +67,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 
-    fourthPage.drawText("filled", {
+    fourthPage.drawText(lot_no_2, {
       x: 590,
       y: height - 300,
       size: 14,
@@ -60,7 +75,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    fourthPage.drawText("filled", {
+    fourthPage.drawText(lot_no_1, {
       x: 590,
       y: height - 345,
       size: 14,
@@ -68,7 +83,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    fifthPage.drawText("filled", {
+    fifthPage.drawText(lot_no_3, {
       x: 590,
       y: height - 422,
       size: 14,
@@ -76,7 +91,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    fifthPage.drawText("filled", {
+    fifthPage.drawText(lot_no_4, {
       x: 590,
       y: height - 455,
       size: 14,
@@ -84,7 +99,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    fifthPage.drawText("filled", {
+    fifthPage.drawText(lot_no_5, {
       x: 590,
       y: height - 502,
       size: 14,
@@ -92,7 +107,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    seventhPage.drawText("filled", {
+    seventhPage.drawText(lot_no_6, {
       x: 590,
       y: height - 400,
       size: 14,
@@ -100,7 +115,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    seventhPage.drawText("filled", {
+    seventhPage.drawText(lot_no_7, {
       x: 590,
       y: height - 447,
       size: 14,
@@ -108,7 +123,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    tenthPage.drawText("filled", {
+    tenthPage.drawText(lot_no_8, {
       x: 590,
       y: height - 410,
       size: 14,
@@ -116,7 +131,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    tenthPage.drawText("filled", {
+    tenthPage.drawText(lot_no_9, {
       x: 590,
       y: height - 430,
       size: 14,
@@ -124,7 +139,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    tenthPage.drawText("filled", {
+    tenthPage.drawText(lot_no_10, {
       x: 590,
       y: height - 450,
       size: 14,
@@ -132,7 +147,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    tenthPage.drawText("filled", {
+    tenthPage.drawText(lot_no_11, {
       x: 590,
       y: height - 470,
       size: 14,
@@ -140,7 +155,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    tenthPage.drawText("filled", {
+    tenthPage.drawText(lot_no_12, {
       x: 590,
       y: height - 490,
       size: 14,
@@ -148,7 +163,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    tenthPage.drawText("filled", {
+    tenthPage.drawText(lot_no_13, {
       x: 590,
       y: height - 510,
       size: 14,
@@ -156,7 +171,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    tenthPage.drawText("filled", {
+    tenthPage.drawText(lot_no_14, {
       x: 590,
       y: height - 530,
       size: 14,
