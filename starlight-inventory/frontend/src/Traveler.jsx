@@ -17,6 +17,7 @@ function Traveler(){
     const fifthPage = pages[4];
     const seventhPage = pages[6];
     const tenthPage = pages[9];
+    const thirteenthPage = pages[12];
     const { height } = firstPage.getSize();
 
     secondPage.drawText("filled", {
@@ -69,7 +70,7 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 451,
+      y: height - 453,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -93,7 +94,7 @@ function Traveler(){
 
     seventhPage.drawText("filled", {
       x: 590,
-      y: height - 449,
+      y: height - 447,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -101,7 +102,7 @@ function Traveler(){
 
     tenthPage.drawText("filled", {
       x: 590,
-      y: height - 420,
+      y: height - 410,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -109,7 +110,7 @@ function Traveler(){
 
     tenthPage.drawText("filled", {
       x: 590,
-      y: height - 440,
+      y: height - 430,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -117,7 +118,7 @@ function Traveler(){
 
     tenthPage.drawText("filled", {
       x: 590,
-      y: height - 460,
+      y: height - 450,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -125,7 +126,7 @@ function Traveler(){
 
     tenthPage.drawText("filled", {
       x: 590,
-      y: height - 480,
+      y: height - 470,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -133,7 +134,7 @@ function Traveler(){
 
     tenthPage.drawText("filled", {
       x: 590,
-      y: height - 500,
+      y: height - 490,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -141,7 +142,7 @@ function Traveler(){
 
     tenthPage.drawText("filled", {
       x: 590,
-      y: height - 520,
+      y: height - 510,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -149,7 +150,15 @@ function Traveler(){
 
     tenthPage.drawText("filled", {
       x: 590,
-      y: height - 540,
+      y: height - 530,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    thirteenthPage.drawText("filled", {
+      x: 590,
+      y: height - 300,
       size: 14,
       font,
       color: rgb(0, 0, 0),
