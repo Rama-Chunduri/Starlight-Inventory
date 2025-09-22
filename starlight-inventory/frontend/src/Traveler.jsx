@@ -16,6 +16,7 @@ function Traveler(){
     const fourthPage = pages[3];
     const fifthPage = pages[4];
     const seventhPage = pages[6];
+    const tenthPage = pages[9];
     const { height } = firstPage.getSize();
 
     secondPage.drawText("filled", {
@@ -60,7 +61,7 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 420,
+      y: height - 422,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -68,7 +69,7 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 459,
+      y: height - 451,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -76,7 +77,7 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 500,
+      y: height - 502,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -92,7 +93,63 @@ function Traveler(){
 
     seventhPage.drawText("filled", {
       x: 590,
-      y: height - 450,
+      y: height - 449,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText("filled", {
+      x: 590,
+      y: height - 420,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText("filled", {
+      x: 590,
+      y: height - 440,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText("filled", {
+      x: 590,
+      y: height - 460,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText("filled", {
+      x: 590,
+      y: height - 480,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText("filled", {
+      x: 590,
+      y: height - 500,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText("filled", {
+      x: 590,
+      y: height - 520,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText("filled", {
+      x: 590,
+      y: height - 540,
       size: 14,
       font,
       color: rgb(0, 0, 0),
