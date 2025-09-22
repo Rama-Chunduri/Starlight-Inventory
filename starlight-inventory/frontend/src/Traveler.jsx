@@ -24,16 +24,16 @@ function Traveler(){
     });
 
     secondPage.drawText("filled", {
-      x: 550,
+      x: 590,
       y: height - 399,
       size: 14,
       font,
       color: rgb(0, 0, 0),
     });
 
-    firstPage.drawText("2025-08-01", {
-      x: 120,
-      y: height - 180,
+    secondPage.drawText("filled", {
+      x: 590,
+      y: height - 450,
       size: 14,
       font,
       color: rgb(0, 0, 0),
