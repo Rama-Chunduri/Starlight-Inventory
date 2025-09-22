@@ -15,6 +15,7 @@ function Traveler(){
     const secondPage = pages[1];
     const fourthPage = pages[3];
     const fifthPage = pages[4];
+    const seventhPage = pages[6];
     const { height } = firstPage.getSize();
 
     secondPage.drawText("filled", {
@@ -59,7 +60,7 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 410,
+      y: height - 420,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -67,7 +68,7 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 449,
+      y: height - 459,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -75,7 +76,23 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 490,
+      y: height - 500,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    seventhPage.drawText("filled", {
+      x: 590,
+      y: height - 400,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    seventhPage.drawText("filled", {
+      x: 590,
+      y: height - 450,
       size: 14,
       font,
       color: rgb(0, 0, 0),
