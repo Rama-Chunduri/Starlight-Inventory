@@ -20,7 +20,7 @@ function Traveler(){
       y: height - 349,
       size: 14,
       font,
-      color: rgb(86, 181, 4),
+      color: rgb(0, 0, 0),
     });
 
     secondPage.drawText("filled", {
@@ -28,7 +28,7 @@ function Traveler(){
       y: height - 399,
       size: 14,
       font,
-      color: rgb(86, 181, 4),
+      color: rgb(0, 0, 0),
     });
 
     firstPage.drawText("2025-08-01", {
