@@ -77,6 +77,7 @@ function PreviewInventory(lot) {
         <thead>
           <tr>
             <th style={cellStyle}>Unique ID</th>
+            <th style={cellStyle}>Part Number</th>
             <th style={cellStyle}>Receiving Lot Number</th>
             <th style={cellStyle}>Supplier Lot Number</th>
             <th style={cellStyle}>Original Quantity</th>
@@ -87,6 +88,7 @@ function PreviewInventory(lot) {
           {lotPreviewData.map(lot => (
             <tr key={lot.unique_id}>
               <td style={cellStyle}>{lot.unique_id}</td>
+              <td style={cellStyle}>{lot.part_number}</td>
               <td style={cellStyle}>{lot.receiving_lot_number}</td>
               <td style={cellStyle}>{lot.supplier_lot_number}</td>
               <td style={cellStyle}>{lot.quantity}</td>

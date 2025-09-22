@@ -70,7 +70,7 @@ function Traveler(){
 
     fifthPage.drawText("filled", {
       x: 590,
-      y: height - 453,
+      y: height - 455,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -158,7 +158,7 @@ function Traveler(){
 
     thirteenthPage.drawText("filled", {
       x: 590,
-      y: height - 300,
+      y: height - 303,
       size: 14,
       font,
       color: rgb(0, 0, 0),
