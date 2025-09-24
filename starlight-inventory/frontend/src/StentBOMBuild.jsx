@@ -33,34 +33,34 @@ function StentBOMBuild(){
         "STR-DA2-PK-30003", 
      ]);
 
-     let p6 = "STR-DA2-IM-10009"
-     if(size == 10){
-        p6.concat(".10")
-     }
-     else{
-        p6.concat(".0")
-        p6.concat(toString(size))
-     }
-     partNumberArray.push(p6);
+     let p6 = "STR-DA2-IM-10009";
+    if (Number(size) === 10) {
+        p6 = p6.concat(".10");
+    } 
+    else {
+        p6 = p6.concat(".0" + String(size));
+    }
+    partNumberArray.push(p6);
+
 
      let p7 = "STR-DA2-PT-10012"
      if(size == 1 || size == 2){
-        p7.concat(".01")
+        p7 = p7.concat(".01")
      }
      else if(size == 3 || size == 4){
-        p7.concat(".02")
+        p7 = p7.concat(".02")
      }
      else if(size == 5){
-        p7.concat(".03")
+        p7 = p7.concat(".03")
      }
      else if(size == 6 || size == 7 ){
-        p7.concat(".01")
+        p7 = p7.concat(".01")
      }
      else if(size == 8 || size == 9 ){
-        p7.concat(".02")
+        p7 = p7.concat(".02")
      }
      else{
-        p7.concat(".03")
+        p7 = p7.concat(".03")
      }
      partNumberArray.push(p7);
 
