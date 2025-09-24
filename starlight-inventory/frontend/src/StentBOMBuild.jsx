@@ -5,6 +5,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 function StentBOMBuild(){
     const [quantity, setQuantity] = useState(0);
+    const [size, setSize] = useState(0);
     const [partNumber, setPartNumber] = useState("");
     const navigate = useNavigate();
     const subcomponents = [
@@ -32,6 +33,37 @@ function StentBOMBuild(){
         "STR-DA2-PK-30003", 
      ]);
 
+     let p6 = "STR-DA2-IM-10009"
+     if(size == 10){
+        p6.concat(".10")
+     }
+     else{
+        p6.concat(".0")
+        p6.concat(toString(size))
+     }
+     partNumberArray.push(p6);
+
+     let p7 = "STR-DA2-PT-10012"
+     if(size == 1 || size == 2){
+        p7.concat(".01")
+     }
+     else if(size == 3 || size == 4){
+        p7.concat(".02")
+     }
+     else if(size == 5){
+        p7.concat(".03")
+     }
+     else if(size == 6 || size == 7 ){
+        p7.concat(".01")
+     }
+     else if(size == 8 || size == 9 ){
+        p7.concat(".02")
+     }
+     else{
+        p7.concat(".03")
+     }
+     partNumberArray.push(p7);
+
     function handleInput(){
         if(partNumber){
             setPartNumberArray(prev => [...prev,partNumber])
@@ -46,6 +78,20 @@ function StentBOMBuild(){
             type="text"
             placeholder="Enter quantity"
             onChange={(e)=>setQuantity(e.target.value)}
+            style={{
+                backgroundColor: "#BDC1C3",
+                color: "#173D62",
+                borderRadius: "8px",
+                padding: "0.5rem",
+                fontSize: "1rem",
+                width: "50%"
+            }}
+            />
+            <h2>Pick Size</h2>
+            <input
+            type="text"
+            placeholder="Enter size (1-10)"
+            onChange={(e)=>setSize(e.target.value)}
             style={{
                 backgroundColor: "#BDC1C3",
                 color: "#173D62",
@@ -74,7 +120,7 @@ function StentBOMBuild(){
             <h2>Starlight Stent System Shipper Box (STR-DA2-PK-30003)</h2>
             <h2>Coated Pusher Tube DDPC32 (STR-DA2-PT-10012.00)</h2>
 
-            <div style={{display: "flex", flexDirection: "row"}}>
+            {/*<div style={{display: "flex", flexDirection: "row"}}>
                 <input
                 type="text"
                 placeholder="Enter Part Number"
@@ -93,10 +139,10 @@ function StentBOMBuild(){
                 >
                     Submit
                 </button>
-            </div>
+            </div>*/}
 
             <h2>Stent Assembly (STR-DA2-IM-10009.00)</h2>
-            <div>
+            {/*<div>
                 <input
                     type="text"
                     placeholder="Enter Part Number"
@@ -115,10 +161,11 @@ function StentBOMBuild(){
                 >
                     Submit
                 </button>
-            </div>
+            </div>*/}
             <button style={{marginBottom: "2rem", marginTop: "2rem", marginLeft: "0.5rem", color: "#173D62", backgroundColor: "#BDC1C3", width: "30%"}}
             onClick={()=>navigate('/lot-management', {
                 state: {
+                    size,
                     quantity,
                     partNumberArray
                 }
