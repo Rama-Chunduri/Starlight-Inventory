@@ -8,7 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 function Traveler(){
   const location = useLocation();
   const lotPreviewData = location.state?.lotPreviewData || [];
-  const quantity = location.state?.quantity || [];
+  const quantity = location.state?.quantity || "";
   function getLotNumber(partNumber, lotPreviewData) {
   const lot = lotPreviewData.find(l => l.part_number === partNumber);
   return lot ? lot.receiving_lot_number : "N/A";
