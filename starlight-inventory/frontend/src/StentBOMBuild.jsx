@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import CustomDropDown from "./CustomDropDown"
 
 function StentBOMBuild() {
   const [quantity, setQuantity] = useState(0);
   const [size, setSize] = useState(0);
+  const [type, setType] = useState("")
   const navigate = useNavigate();
 
   const baseParts = [
@@ -37,7 +39,6 @@ function StentBOMBuild() {
     }
     result.push(p6);
 
-    // Coated Pusher Tube
     let p7 = "STR-DA2-PT-10012";
     if (size === 1 || size === 2) p7 = p7.concat(".01");
     else if (size === 3 || size === 4) p7 = p7.concat(".02");
@@ -55,6 +56,7 @@ function StentBOMBuild() {
     const finalParts = [...baseParts, ...buildDynamicParts(Number(size))];
     navigate("/lot-management", {
       state: {
+        type,
         size,
         quantity,
         partNumberArray: finalParts,
@@ -91,6 +93,20 @@ function StentBOMBuild() {
         type="number"
         placeholder="Enter size (1-10)"
         onChange={(e) => setSize(Number(e.target.value))}
+        style={{
+          backgroundColor: "#BDC1C3",
+          color: "#173D62",
+          borderRadius: "8px",
+          padding: "0.5rem",
+          fontSize: "1rem",
+          width: "50%",
+        }}
+      />
+      <h2>Build Type</h2>
+       <input
+        type="text"
+        placeholder="Enter E/M/P"
+        onChange={(e) => setType(Number(e.target.value))}
         style={{
           backgroundColor: "#BDC1C3",
           color: "#173D62",

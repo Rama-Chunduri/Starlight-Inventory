@@ -8,6 +8,7 @@ const API_URL = import.meta.env.VITE_API_URL;
 function Traveler(){
   const location = useLocation();
   const lotPreviewData = location.state?.lotPreviewData || [];
+  const quantity = location.state?.quantity || [];
   function getLotNumber(partNumber, lotPreviewData) {
   const lot = lotPreviewData.find(l => l.part_number === partNumber);
   return lot ? lot.receiving_lot_number : "N/A";
@@ -50,6 +51,14 @@ function Traveler(){
     const lot_no_13 = getLotNumber("MS-00-50012", lotPreviewData)
     const lot_no_14 = getLotNumber("MS-00-50013", lotPreviewData)
     const lot_no_15 = getLotNumber("STR-DA2-PK-30003", lotPreviewData)
+
+    firstPage.drawText(quantity, {
+      x: 300,
+      y: height - 150,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
 
     secondPage.drawText("filled", {
       x: 590,
