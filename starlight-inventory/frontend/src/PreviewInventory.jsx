@@ -104,7 +104,7 @@ function PreviewInventory(lot) {
 
       <button onClick={()=>{handleConfirm(); navigate('/traveler', {
         state: {
-          quantity,
+          quantity: String(quantity),
           lotPreviewData
         }
       })}} style={buttonStyle}>
