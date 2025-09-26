@@ -939,8 +939,11 @@ def update_lots( user_id: str, items: List[UpdateLotItem],request: Request = Non
 
     return {"status": "success", "updated": len(items)}
 
-@app.post('/add-build')
-async def add_data_to_database(file_value: str):
+class Build(BaseModel):
+    file: str
+
+@app.post("/add-build")
+async def add_data_to_database(build: Build):
     conn = mysql.connector.connect(
         host="sql3.freesqldatabase.com",
         user="sql3793170",
@@ -950,7 +953,7 @@ async def add_data_to_database(file_value: str):
     cursor = conn.cursor()
 
     sql = "INSERT INTO active_builds (`file`) VALUES (%s)"
-    cursor.execute(sql, (file_value,))  
+    cursor.execute(sql, (build.file,))
 
     conn.commit()
     cursor.close()
