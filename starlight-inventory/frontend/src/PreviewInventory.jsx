@@ -7,6 +7,8 @@ function PreviewInventory(lot) {
   const location = useLocation();
   const selectedIds = location.state?.selectedIds || [];
   const quantity = location.state?.quantity || 0;
+  const type = location.state?.type || "";
+  const size = location.state?.size || 0;
   const navigate = useNavigate();
 
   const [lotPreviewData, setLotPreviewData] = useState([]);
@@ -104,6 +106,8 @@ function PreviewInventory(lot) {
 
       <button onClick={()=>{handleConfirm(); navigate('/traveler', {
         state: {
+          size: String(size),
+          type,
           quantity: String(quantity),
           lotPreviewData
         }

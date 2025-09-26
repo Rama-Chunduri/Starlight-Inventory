@@ -8,7 +8,9 @@ function LotManagement(){
   const navigate = useNavigate();
 
   const partNumberArray = location.state?.partNumberArray || [];
-  const quantity = location.state?.quantity || [];
+  const quantity = location.state?.quantity || 0;
+  const type = location.state?.type || "";
+  const size = location.state?.type || 0;
 
   const [componentIndex, setComponentIndex] = useState(0);
   const [lotData, setLotData] = useState([]);
@@ -40,6 +42,8 @@ function LotManagement(){
       // Proceed to final screen
       navigate("/preview-inventory", {
         state: {
+          size,
+          type,
           quantity,
           selectedIds,
         },

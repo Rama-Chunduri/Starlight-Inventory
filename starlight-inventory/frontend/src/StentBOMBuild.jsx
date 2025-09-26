@@ -106,7 +106,7 @@ function StentBOMBuild() {
        <input
         type="text"
         placeholder="Enter E/M/P"
-        onChange={(e) => setType(Number(e.target.value))}
+        onChange={(e) => setType(e.target.value)}
         style={{
           backgroundColor: "#BDC1C3",
           color: "#173D62",

@@ -9,6 +9,7 @@ function Traveler(){
   const location = useLocation();
   const lotPreviewData = location.state?.lotPreviewData || [];
   const quantity = location.state?.quantity || "";
+  const type = location.state?.type || "";
   function getLotNumber(partNumber, lotPreviewData) {
   const lot = lotPreviewData.find(l => l.part_number === partNumber);
   return lot ? lot.receiving_lot_number : "N/A";
@@ -52,9 +53,37 @@ function Traveler(){
     const lot_no_14 = getLotNumber("MS-00-50013", lotPreviewData)
     const lot_no_15 = getLotNumber("STR-DA2-PK-30003", lotPreviewData)
 
+    if(type == 'E'){
+      firstPage.drawText('X', {
+      x: 510,
+      y: height - 150,
+      size: 10,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
+    else if (type == 'M'){
+      firstPage.drawText('X', {
+      x: 510,
+      y: height - 150,
+      size: 10,
+      font,
+      color: rgb(0, 0, 0),
+      });
+    }
+    else if (type == 'P'){
+      firstPage.drawText('X', {
+      x: 510,
+      y: height - 150,
+      size: 10,
+      font,
+      color: rgb(0, 0, 0),
+      });
+    }
+
     firstPage.drawText(quantity, {
       x: 300,
-      y: height - 150,
+      y: height - 200,
       size: 14,
       font,
       color: rgb(0, 0, 0),
