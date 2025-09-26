@@ -183,7 +183,7 @@ function Traveler(){
     else{
       second = "STR-DA2-IM-10009.0" + size
       secondPage.drawText("0", {
-      x: 150,
+      x: 148,
       y: height - 439,
       size: 14,
       font,
@@ -213,7 +213,7 @@ function Traveler(){
       first = "STR-DA2-PT-10012." + "02"
       secondPage.drawText("02", {
       x: 150,
-      y: height - 410,
+      y: height - 400,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -495,7 +495,6 @@ function Traveler(){
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
-        unique_id: Date.now().toString(), // or use a real build id
         file: base64String,
       }),
     });
