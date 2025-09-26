@@ -203,7 +203,7 @@ function Traveler(){
       first = "STR-DA2-PT-10012." + "01"
       secondPage.drawText("01", {
       x: 150,
-      y: height - 410,
+      y: height - 400,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -223,7 +223,7 @@ function Traveler(){
       first = "STR-DA2-PT-10012." + "03"
       secondPage.drawText("03", {
       x: 150,
-      y: height - 410,
+      y: height - 400,
       size: 14,
       font,
       color: rgb(0, 0, 0),
