@@ -59,16 +59,16 @@ function Traveler(){
     }
     else{
      page.drawText('0', {
-      x: 440,
+      x: 420,
       y: height - 70,
-      size: 10,
+      size: 14,
       font,
       color: rgb(0, 0, 0),
     });
     page.drawText(size, {
-      x: 460,
+      x: 440,
       y: height - 70,
-      size: 10,
+      size: 14,
       font,
       color: rgb(0, 0, 0),
     });
@@ -94,7 +94,7 @@ function Traveler(){
     if(type == 'E'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 180,
+      y: height - 185,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -151,8 +151,24 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 
+    secondPage.drawText(quantity, {
+      x: 690,
+      y: height - 449,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+
     fourthPage.drawText(lot_no_2, {
       x: 590,
+      y: height - 300,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+     fourthPage.drawText(quantity, {
+      x: 690,
       y: height - 300,
       size: 14,
       font,
@@ -167,6 +183,14 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
+    fourthPage.drawText(quantity, {
+      x: 690,
+      y: height - 345,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
     fifthPage.drawText(lot_no_3, {
       x: 590,
       y: height - 422,
@@ -175,8 +199,24 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
+    fifthPage.drawText(quantity, {
+      x: 690,
+      y: height - 422,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
     fifthPage.drawText(lot_no_4, {
       x: 590,
+      y: height - 455,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    fifthPage.drawText(quantity, {
+      x: 690,
       y: height - 455,
       size: 14,
       font,
@@ -207,8 +247,24 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
+    seventhPage.drawText(quantity, {
+      x: 690,
+      y: height - 447,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
     tenthPage.drawText(lot_no_8, {
       x: 590,
+      y: height - 410,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText(quantity, {
+      x: 690,
       y: height - 410,
       size: 14,
       font,
@@ -223,8 +279,24 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
+    tenthPage.drawText(quantity, {
+      x: 690,
+      y: height - 430,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
     tenthPage.drawText(lot_no_10, {
       x: 590,
+      y: height - 450,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText(quantity, {
+      x: 690,
       y: height - 450,
       size: 14,
       font,
@@ -239,8 +311,24 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
+    tenthPage.drawText(quantity, {
+      x: 690,
+      y: height - 470,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
     tenthPage.drawText(lot_no_12, {
       x: 590,
+      y: height - 490,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    tenthPage.drawText(quantity, {
+      x: 690,
       y: height - 490,
       size: 14,
       font,
@@ -255,6 +343,14 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
+    tenthPage.drawText(quantity, {
+      x: 690,
+      y: height - 510,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
     tenthPage.drawText(lot_no_14, {
       x: 590,
       y: height - 530,
@@ -263,13 +359,21 @@ function Traveler(){
       color: rgb(0, 0, 0),
     })
 
-    thirteenthPage.drawText("filled", {
+    tenthPage.drawText(String(2*Number(quantity)), {
+      x: 690,
+      y: height - 530,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    })
+
+    /*thirteenthPage.drawText("filled", {
       x: 590,
       y: height - 303,
       size: 14,
       font,
       color: rgb(0, 0, 0),
-    })
+    })*/
 
     const pdfBytes = await pdfDoc.save();
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
