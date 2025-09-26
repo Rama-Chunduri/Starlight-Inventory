@@ -83,29 +83,29 @@ function Traveler(){
     }
     else{
      page.drawText('0', {
-      x: 422,
+      x: 423,
       y: height - 68,
       size: 14,
       font: boldFont,
       color: rgb(0, 0, 0),
     });
     page.drawText(size, {
-      x: 440,
-      y: height - 70,
+      x: 442,
+      y: height - 68,
       size: 14,
       font: boldFont,
       color: rgb(0, 0, 0),
     });
     }
     page.drawText(left, {
-      x: 340,
+      x: 360,
       y: height - 90,
       size: 14,
       font: boldFont,
       color: rgb(0, 0, 0),
     })
     page.drawText(right, {
-      x: 440,
+      x: 420,
       y: height - 90,
       size: 14,
       font: boldFont,
@@ -113,6 +113,7 @@ function Traveler(){
     })
   });
 
+    
     const lot_no_1 = getLotNumber("MS-00-50002", lotPreviewData)
     const lot_no_2 = getLotNumber("STR-DA2-CA-10001", lotPreviewData)
     const lot_no_3 = getLotNumber("MS-DA2-50002", lotPreviewData)
@@ -128,6 +129,7 @@ function Traveler(){
     const lot_no_13 = getLotNumber("MS-00-50012", lotPreviewData)
     const lot_no_14 = getLotNumber("MS-00-50013", lotPreviewData)
     const lot_no_15 = getLotNumber("STR-DA2-PK-30003", lotPreviewData)
+    
 
     if(type == 'E'){
       firstPage.drawText('X', {
@@ -165,7 +167,10 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 
+    let second = ""
+
     if(size == "10"){
+      second = "STR-DA2-IM-10009." + "10"
       secondPage.drawText("10", {
       x: 150,
       y: height - 440,
@@ -175,23 +180,26 @@ function Traveler(){
     });
     }
     else{
+      second = "STR-DA2-IM-10009.0" + size
       secondPage.drawText("0", {
       x: 150,
-      y: height - 449,
+      y: height - 400,
       size: 14,
       font,
       color: rgb(0, 0, 0),
     });
     secondPage.drawText(size, {
-      x: 152,
-      y: height - 449,
+      x: 154,
+      y: height - 439,
       size: 14,
       font,
       color: rgb(0, 0, 0),
     });
     }
+    let first = ""
 
     if(size == "1" || size == "2" || size == "6" || size == "7"){
+      first = "STR-DA2-PT-10012." + "01"
       secondPage.drawText("01", {
       x: 150,
       y: height - 440,
@@ -201,6 +209,7 @@ function Traveler(){
     });
     }
     else if(size == "3" || size == "4" || size == "8" || size == "9"){
+      first = "STR-DA2-PT-10012." + "02"
       secondPage.drawText("02", {
       x: 150,
       y: height - 440,
@@ -210,6 +219,7 @@ function Traveler(){
     });
     }
     else if(size == "5" || size == "10"){
+      first = "STR-DA2-PT-10012." + "03"
       secondPage.drawText("03", {
       x: 150,
       y: height - 440,
@@ -219,7 +229,10 @@ function Traveler(){
     });
     }
 
-    secondPage.drawText("filled", {
+    const lot_no_16 = getLotNumber(first, lotPreviewData)
+    const lot_no_17 = getLotNumber(second, lotPreviewData)
+
+    secondPage.drawText(lot_no_16, {
       x: 590,
       y: height - 410,
       size: 14,
@@ -235,7 +248,7 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 
-    secondPage.drawText("filled", {
+    secondPage.drawText(lot_no_17, {
       x: 590,
       y: height - 449,
       size: 14,
