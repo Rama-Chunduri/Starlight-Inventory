@@ -10,6 +10,7 @@ function Traveler(){
   const lotPreviewData = location.state?.lotPreviewData || [];
   const quantity = location.state?.quantity || "";
   const type = location.state?.type || "";
+  const size = location.state?.size || "";
   function getLotNumber(partNumber, lotPreviewData) {
   const lot = lotPreviewData.find(l => l.part_number === partNumber);
   return lot ? lot.receiving_lot_number : "N/A";
@@ -37,6 +38,43 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 */
+
+    pages.forEach((page, index) => {
+    const { height, width } = page.getSize();
+    if(size == '10'){
+      page.drawText('1', {
+      x: 400,
+      y: height - 100,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    page.drawText('0', {
+      x: 420,
+      y: height - 100,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
+    else{
+     page.drawText('0', {
+      x: width - 60,
+      y: 20,
+      size: 10,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    page.drawText(size, {
+      x: width - 60,
+      y: 20,
+      size: 10,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
+  });
+
     const lot_no_1 = getLotNumber("MS-00-50002", lotPreviewData)
     const lot_no_2 = getLotNumber("STR-DA2-CA-10001", lotPreviewData)
     const lot_no_3 = getLotNumber("MS-DA2-50002", lotPreviewData)
@@ -56,7 +94,7 @@ function Traveler(){
     if(type == 'E'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 150,
+      y: height - 270,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -65,7 +103,7 @@ function Traveler(){
     else if (type == 'M'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 150,
+      y: height - 290,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -74,7 +112,7 @@ function Traveler(){
     else if (type == 'P'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 150,
+      y: height - 310,
       size: 10,
       font,
       color: rgb(0, 0, 0),
