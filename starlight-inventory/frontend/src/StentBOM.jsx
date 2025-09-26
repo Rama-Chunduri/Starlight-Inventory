@@ -11,7 +11,7 @@ function StentBOM() {
             <button onClick={()=>navigate('/stent-bom-lots')} className="flex-item-implant">View Lot Table</button>
             <button onClick={()=>navigate('/add-lots')} className="flex-item-implant">Add Lots</button>
             <button onClick={()=>navigate('/stent-bom-build')} className="flex-item-implant">Build</button>
-            <button onClick={()=>navigate('/stent-X-build')} className="flex-item-implant">Active Builds</button>
+            <button onClick={()=>navigate('/active-builds')} className="flex-item-implant">Active Builds</button>
         </div>
     )
 }

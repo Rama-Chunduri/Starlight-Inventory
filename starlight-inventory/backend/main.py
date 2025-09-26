@@ -729,6 +729,26 @@ def delete_row_implant_inventory(item: dict=Body(...)):
     conn.close()
     return {"status" : "success", "updated_id": unique_id}
 
+@app.delete("/active-builds-delete-row")
+def delete_row_implant_inventory(item: dict=Body(...)):
+    unique_id = item.get("unique_id")
+    if not unique_id:
+        return {"error" : "unique_id is required"}
+
+    conn = mysql.connector.connect(
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
+    cursor = conn.cursor(dictionary=True)
+    sql = f"DELETE FROM active_builds WHERE unique_id = %s"
+    cursor.execute(sql, (unique_id,))
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status" : "success", "updated_id": unique_id}
+
 
 @app.delete("/stent-lots-delete-row")
 def delete_row_stent_lots(item: dict=Body(...)):
@@ -918,6 +938,24 @@ def update_lots( user_id: str, items: List[UpdateLotItem],request: Request = Non
     conn.close()
 
     return {"status": "success", "updated": len(items)}
+
+@app.post('/add-build')
+async def add_data_to_database(file_value: str):
+    conn = mysql.connector.connect(
+        host="sql3.freesqldatabase.com",
+        user="sql3793170",
+        password="5iBG4dCytH",
+        database="sql3793170"
+    )
+    cursor = conn.cursor()
+
+    sql = "INSERT INTO active_builds (`file`) VALUES (%s)"
+    cursor.execute(sql, (file_value,))  
+
+    conn.commit()
+    cursor.close()
+    conn.close()
+    return {"status": "success"}
 
 if __name__ == "__main__":
     import uvicorn

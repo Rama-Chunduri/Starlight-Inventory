@@ -1,12 +1,13 @@
 import traveler from "./assets/Traveler.png";
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import LHR_template from "../LHR_template.pdf";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function Traveler(){
   const location = useLocation();
+  const navigate = useNavigate();
   const lotPreviewData = location.state?.lotPreviewData || [];
   const quantity = location.state?.quantity || "";
   const type = location.state?.type || "";
@@ -134,7 +135,7 @@ function Traveler(){
     if(type == 'E'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 189,
+      y: height - 191,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -183,7 +184,7 @@ function Traveler(){
       second = "STR-DA2-IM-10009.0" + size
       secondPage.drawText("0", {
       x: 150,
-      y: height - 400,
+      y: height - 439,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -202,7 +203,7 @@ function Traveler(){
       first = "STR-DA2-PT-10012." + "01"
       secondPage.drawText("01", {
       x: 150,
-      y: height - 440,
+      y: height - 410,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -212,7 +213,7 @@ function Traveler(){
       first = "STR-DA2-PT-10012." + "02"
       secondPage.drawText("02", {
       x: 150,
-      y: height - 440,
+      y: height - 410,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -222,7 +223,7 @@ function Traveler(){
       first = "STR-DA2-PT-10012." + "03"
       secondPage.drawText("03", {
       x: 150,
-      y: height - 440,
+      y: height - 410,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -479,12 +480,33 @@ function Traveler(){
       font,
       color: rgb(0, 0, 0),
     })*/
+   const pdfBytes = await pdfDoc.save();
+   const base64String = btoa(
+    new Uint8Array(pdfBytes).reduce((data, byte) => data + String.fromCharCode(byte), "")
+  );
 
-    const pdfBytes = await pdfDoc.save();
+    
     const blob = new Blob([pdfBytes], { type: "application/pdf" });
     const url = URL.createObjectURL(blob);
 
     window.open(url, "_blank");
+     try {
+    const res = await fetch(`${API_URL}/add-build`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        unique_id: Date.now().toString(), // or use a real build id
+        file: base64String,
+      }),
+    });
+
+    if (!res.ok) throw new Error("Failed to save file in DB");
+    console.log("File saved to DB");
+  } catch (err) {
+    console.error("Error saving file:", err);
+    alert("Could not save file in database: " + err.message);
+  }
+    return base64String;
   };
 
         return(
@@ -499,7 +521,15 @@ function Traveler(){
             }}>
                 <h1 style={{color: "#173D62", backgroundColor: "white", fontSize: "3rem"}}>The Traveler</h1>
                 <img style={{ width: "500px", height: "auto" }} src={traveler} alt="the traveler" />
-                <button onClick={generateDoc} style={{
+                <button onClick= { async () => {
+                          const file = await generateDoc();
+                          navigate("/active-builds", {
+                           state: {
+                              file
+                          },
+                });
+                }}
+                style={{
                     marginTop: "1rem",
                     padding: "0.5rem 1rem",
                     backgroundColor: "#173D62",
