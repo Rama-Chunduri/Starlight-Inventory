@@ -179,6 +179,22 @@ def get_implant_inventory():
     conn.close()
     return rows
 
+@app.get("/active-builds")
+def get_implant_inventory():
+    conn = mysql.connector.connect(
+           host = "sql3.freesqldatabase.com",
+           user = "sql3793170",
+           password = "5iBG4dCytH",
+           database = "sql3793170"
+       )
+    cursor = conn.cursor(dictionary=True)
+    sql = "SELECT * FROM active-builds"
+    cursor.execute(sql)
+    rows = cursor.fetchall()
+    cursor.close()
+    conn.close()
+    return rows
+
 
 @app.get("/fr-table-view")
 def get_fr_table():
