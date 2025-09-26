@@ -39,7 +39,7 @@ function Traveler(){
     });
 */
 
-    pages.forEach((page, index) => {
+    pages.forEach((page) => {
     const { height, width } = page.getSize();
     if(size == '10'){
       page.drawText('1', {
@@ -59,15 +59,15 @@ function Traveler(){
     }
     else{
      page.drawText('0', {
-      x: width - 60,
-      y: 20,
+      x: 400,
+      y: height - 100,
       size: 10,
       font,
       color: rgb(0, 0, 0),
     });
     page.drawText(size, {
-      x: width - 60,
-      y: 20,
+      x: 420,
+      y: height - 100,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -94,7 +94,7 @@ function Traveler(){
     if(type == 'E'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 270,
+      y: height - 180,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -103,7 +103,7 @@ function Traveler(){
     else if (type == 'M'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 290,
+      y: height - 200,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -112,7 +112,7 @@ function Traveler(){
     else if (type == 'P'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 310,
+      y: height - 220,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -121,7 +121,7 @@ function Traveler(){
 
     firstPage.drawText(quantity, {
       x: 300,
-      y: height - 200,
+      y: height - 170,
       size: 14,
       font,
       color: rgb(0, 0, 0),
@@ -129,6 +129,14 @@ function Traveler(){
 
     secondPage.drawText("filled", {
       x: 590,
+      y: height - 410,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+
+    secondPage.drawText("1", {
+      x: 650,
       y: height - 410,
       size: 14,
       font,
