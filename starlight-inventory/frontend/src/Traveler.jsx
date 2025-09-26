@@ -29,6 +29,7 @@ function Traveler(){
     const tenthPage = pages[9];
     const thirteenthPage = pages[12];
     const { height } = firstPage.getSize();
+    const boldFont = await pdfDoc.embedFont(StandardFonts.HelveticaBold);
 
    /*secondPage.drawText("filled", {
       x: 417,
@@ -38,41 +39,78 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 */
+    let left = ""
+    let right = ""
+    if(size == "1" || size == "2" || size == "3" || size == "4" || size == "5"){
+      left = "3.5"
+    }
+    else{
+      left = "4.0"
+    }
+    if(size == "1" || size == "6"){
+      right = "16"
+    }
+    else if(size == "2" || size == "7"){
+      right = "18"
+    }
+    else if(size == "3" || size == "8"){
+      right = "22"
+    }
+    else if(size == "4" || size == "9"){
+      right = "25"
+    }
+    else if(size == "5" || size == "10"){
+      right = "28"
+    }
 
     pages.forEach((page) => {
     const { height, width } = page.getSize();
     if(size == '10'){
       page.drawText('1', {
-      x: 400,
-      y: height - 100,
+      x: 422,
+      y: height - 68,
       size: 14,
-      font,
+      font: boldFont,
       color: rgb(0, 0, 0),
     });
     page.drawText('0', {
-      x: 420,
-      y: height - 100,
+      x: 422,
+      y: height - 68,
       size: 14,
-      font,
+      font: boldFont,
       color: rgb(0, 0, 0),
     });
     }
     else{
      page.drawText('0', {
-      x: 420,
-      y: height - 70,
+      x: 422,
+      y: height - 68,
       size: 14,
-      font,
+      font: boldFont,
       color: rgb(0, 0, 0),
     });
     page.drawText(size, {
       x: 440,
       y: height - 70,
       size: 14,
-      font,
+      font: boldFont,
       color: rgb(0, 0, 0),
     });
     }
+    page.drawText(left, {
+      x: 340,
+      y: height - 90,
+      size: 14,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    })
+    page.drawText(right, {
+      x: 440,
+      y: height - 90,
+      size: 14,
+      font: boldFont,
+      color: rgb(0, 0, 0),
+    })
   });
 
     const lot_no_1 = getLotNumber("MS-00-50002", lotPreviewData)
@@ -94,7 +132,7 @@ function Traveler(){
     if(type == 'E'){
       firstPage.drawText('X', {
       x: 510,
-      y: height - 185,
+      y: height - 189,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -126,6 +164,60 @@ function Traveler(){
       font,
       color: rgb(0, 0, 0),
     });
+
+    if(size == "10"){
+      secondPage.drawText("10", {
+      x: 150,
+      y: height - 440,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
+    else{
+      secondPage.drawText("0", {
+      x: 150,
+      y: height - 449,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    secondPage.drawText(size, {
+      x: 152,
+      y: height - 449,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
+
+    if(size == "1" || size == "2" || size == "6" || size == "7"){
+      secondPage.drawText("01", {
+      x: 150,
+      y: height - 440,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
+    else if(size == "3" || size == "4" || size == "8" || size == "9"){
+      secondPage.drawText("02", {
+      x: 150,
+      y: height - 440,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
+    else if(size == "5" || size == "10"){
+      secondPage.drawText("03", {
+      x: 150,
+      y: height - 440,
+      size: 14,
+      font,
+      color: rgb(0, 0, 0),
+    });
+    }
 
     secondPage.drawText("filled", {
       x: 590,
