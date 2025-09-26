@@ -59,15 +59,15 @@ function Traveler(){
     }
     else{
      page.drawText('0', {
-      x: 400,
-      y: height - 100,
+      x: 440,
+      y: height - 70,
       size: 10,
       font,
       color: rgb(0, 0, 0),
     });
     page.drawText(size, {
-      x: 420,
-      y: height - 100,
+      x: 460,
+      y: height - 70,
       size: 10,
       font,
       color: rgb(0, 0, 0),
@@ -135,8 +135,8 @@ function Traveler(){
       color: rgb(0, 0, 0),
     });
 
-    secondPage.drawText("1", {
-      x: 650,
+    secondPage.drawText(quantity, {
+      x: 690,
       y: height - 410,
       size: 14,
       font,
