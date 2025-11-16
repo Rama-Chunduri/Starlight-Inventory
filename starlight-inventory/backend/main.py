@@ -188,7 +188,7 @@ def get_implant_inventory():
            database = "sql3793170"
        )
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM active-builds"
+    sql = "SELECT * FROM active_builds"
     cursor.execute(sql)
     rows = cursor.fetchall()
     cursor.close()
