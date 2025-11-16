@@ -960,6 +960,7 @@ class Build(BaseModel):
 
 @app.post("/add-build")
 async def add_data_to_database(build: Build):
+    print("RAW FILE STRING:", build.file[:200])  # first 200 chars
     conn = mysql.connector.connect(
         host="sql3.freesqldatabase.com",
         user="sql3793170",
