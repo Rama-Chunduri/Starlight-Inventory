@@ -27,7 +27,6 @@ function ActiveBuilds() {
     fetchData();
   }, []);
 
-  // ✅ Handle right-click on a cell
   const handleContextMenu = (e, rowIdx, colKey) => {
     e.preventDefault();
     const rect = e.currentTarget.getBoundingClientRect();
@@ -36,7 +35,6 @@ function ActiveBuilds() {
 
   const closeDropdown = () => setDropdownPos(null);
 
-  // ✅ Open PDF from base64
   const handleOpenFile = () => {
     if (!dropdownPos) return;
     const { rowIdx, colKey } = dropdownPos;
@@ -91,7 +89,6 @@ function ActiveBuilds() {
     closeDropdown();
   };
 
-  // ✅ Edit cell handler
   const handleEditClick = () => {
     if (!dropdownPos) return;
     const { rowIdx, colKey } = dropdownPos;
@@ -113,7 +110,7 @@ function ActiveBuilds() {
     <div style={{ padding: "20px" }}>
       <h2>Active Builds</h2>
 
-      <table border="1" cellPadding="8" style={{ borderCollapse: "collapse" }}>
+      <table border="1" cellPadding="8" style={{ borderCollapse: "collapse", color: "white"  }}>
         <thead>
           <tr>
             {columns.map((col) => (
@@ -140,7 +137,7 @@ function ActiveBuilds() {
         </tbody>
       </table>
 
-      {/* ✅ Context Menu */}
+      {}
       {dropdownPos && (
         <div
           style={{
@@ -151,12 +148,13 @@ function ActiveBuilds() {
             border: "1px solid black",
             boxShadow: "2px 2px 6px rgba(0,0,0,0.2)",
             zIndex: 1000,
+            color: "white" 
           }}
         >
           {/* Only show Open File on file column */}
           {dropdownPos.colKey === "file" && (
             <div
-              style={{ padding: "8px", cursor: "pointer" }}
+              style={{ padding: "8px", cursor: "pointer", color: "white"  }}
               onClick={handleOpenFile}
             >
               Open File
@@ -166,7 +164,7 @@ function ActiveBuilds() {
           {/* Generic edit for all other columns */}
           {dropdownPos.colKey !== "file" && (
             <div
-              style={{ padding: "8px", cursor: "pointer" }}
+              style={{ padding: "8px", cursor: "pointer", color: "white"  }}
               onClick={handleEditClick}
             >
               Edit Cell
