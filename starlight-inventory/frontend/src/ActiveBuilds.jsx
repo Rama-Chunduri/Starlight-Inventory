@@ -9,7 +9,6 @@ function ActiveBuilds() {
   const [columns, setColumns] = useState([]);
   const [dropdownPos, setDropdownPos] = useState(null); // fixed: was []
 
-  // ✅ Fetch builds
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -35,41 +34,52 @@ function ActiveBuilds() {
 
   const closeDropdown = () => setDropdownPos(null);
 
-  const handleOpenFile = () => {
-    if (!dropdownPos) return;
-    const { rowIdx, colKey } = dropdownPos;
+const handleOpenFile = () => {
+  if (!dropdownPos) return;
 
-    if (colKey !== "file") {
-      alert("Please right-click the file column to open a document.");
-      return;
+  const { rowIdx, colKey } = dropdownPos;
+  if (colKey !== "file") return;
+
+  const row = rows[rowIdx];
+  let base64String = row[colKey];
+
+  if (!base64String) {
+    alert("No file found in this cell.");
+    return;
+  }
+
+  try {
+    // 1. Remove data URL prefix if present
+    if (base64String.startsWith("data:")) {
+      base64String = base64String.split(",")[1];
     }
 
-    const row = rows[rowIdx];
-    const base64String = row[colKey];
-    if (!base64String) {
-      alert("No file found in this cell.");
-      return;
+    // 2. Remove whitespace/newlines (common error)
+    base64String = base64String.replace(/\s/g, "");
+
+    // 3. Decode base64 → binary
+    const byteCharacters = window.atob(base64String);
+    const byteArray = new Uint8Array(byteCharacters.length);
+
+    for (let i = 0; i < byteCharacters.length; i++) {
+      byteArray[i] = byteCharacters.charCodeAt(i);
     }
 
-    try {
-      const byteCharacters = atob(base64String);
-      const byteNumbers = new Array(byteCharacters.length);
-      for (let i = 0; i < byteCharacters.length; i++) {
-        byteNumbers[i] = byteCharacters.charCodeAt(i);
-      }
-      const byteArray = new Uint8Array(byteNumbers);
-      const blob = new Blob([byteArray], { type: "application/pdf" });
-      const url = URL.createObjectURL(blob);
-      window.open(url, "_blank");
-    } catch (err) {
-      console.error("Failed to decode file:", err);
-      alert("Invalid file format.");
-    }
+    // 4. Create PDF blob
+    const blob = new Blob([byteArray], { type: "application/pdf" });
 
-    closeDropdown();
-  };
+    // 5. Open new tab
+    const url = URL.createObjectURL(blob);
+    window.open(url, "_blank");
+  } catch (err) {
+    console.error("Failed to decode file:", err);
+    alert("Invalid file format.");
+  }
 
-  // ✅ Close build
+  closeDropdown();
+};
+
+
   const handleCloseBuild = async () => {
     if (!dropdownPos) return;
     const { rowIdx } = dropdownPos;
