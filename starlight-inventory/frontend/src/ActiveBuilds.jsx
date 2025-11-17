@@ -9,6 +9,8 @@ function ActiveBuilds() {
   const [columns, setColumns] = useState([]);
   const [dropdownPos, setDropdownPos] = useState(null); // fixed: was []
   const [reconcileRow, setReconcileRow] = useState(null);
+  const [showReconcileModal, setShowReconcileModal] = useState(false);
+  const [closingRow, setClosingRow] = useState(null);
 
   const openReconciliationModal = (row) => {
     setReconcileRow(row);
@@ -86,41 +88,19 @@ const handleOpenFile = () => {
 };
 
 
-  const handleCloseBuild = async () => {
+  const handleCloseBuild = () => {
   if (!dropdownPos) return;
+
   const { rowIdx } = dropdownPos;
   const row = rows[rowIdx];
 
+  // Instead of confirm(), open our modal
+  setClosingRow(row);
+  setShowReconcileModal(true);
+
   closeDropdown();
-
-  // Step 1 — Ask the question
-  const needsReconcile = window.confirm(
-    "Do you need to reconcile any components in this build?"
-  );
-
-  if (!needsReconcile) {
-    // Step 2 — user says NO → delete row
-    try {
-      const res = await fetch(`${API_URL}/active-builds-delete-row`, {
-        method: "DELETE",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ unique_id: row.unique_id }),
-      });
-
-      if (!res.ok) throw new Error("Failed to delete build");
-
-      // Remove from UI
-      setRows((prev) => prev.filter((r) => r.unique_id !== row.unique_id));
-    } catch (err) {
-      console.error("Error deleting build:", err);
-    }
-
-    return;
-  }
-
-  // Step 3 — user said YES → trigger reconciliation UI
-  openReconciliationModal(row);
 };
+
 
 
   const handleEditClick = () => {
@@ -213,34 +193,68 @@ const handleOpenFile = () => {
           </div>
         </div>
       )}
-      {reconcileRow && (
-  <div
+      {showReconcileModal && (
+  <div 
     style={{
       position: "fixed",
-      top: 0,
-      left: 0,
-      right: 0,
-      bottom: 0,
-      background: "rgba(0,0,0,0.6)",
+      top: 0, left: 0, right: 0, bottom: 0,
+      background: "rgba(0,0,0,0.5)",
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       zIndex: 2000
     }}
   >
-    <div style={{ background: "white", padding: 20 }}>
-      <h3>Reconcile Components for Build {reconcileRow.unique_id}</h3>
+    <div 
+      style={{
+        background: "white",
+        padding: "20px",
+        borderRadius: "8px",
+        width: "300px",
+        textAlign: "center",
+        color: "black"
+      }}
+    >
+      <h3>Do you need to reconcile any components?</h3>
 
-      <p>
-        (Here you would show component list and allow entering +5 / -5 values)
-      </p>
+      <button
+        style={{ marginTop: "15px", width: "100%", padding: "10px" }}
+        onClick={async () => {
+          // User selects "Close" → delete the row
 
-      <button onClick={() => setReconcileRow(null)}>
-        Close
+          await fetch(`${API_URL}/active-builds-delete-row`, {
+            method: "DELETE",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ unique_id: closingRow.unique_id })
+          });
+
+          setRows(prev => prev.filter(r => r.unique_id !== closingRow.unique_id));
+          setShowReconcileModal(false);
+        }}
+      >
+        Close Build
+      </button>
+
+      <button
+        style={{
+          marginTop: "10px",
+          width: "100%",
+          padding: "10px",
+          background: "green",
+          color: "white"
+        }}
+        onClick={() => {
+          setShowReconcileModal(false);
+          // TODO: open reconcile UI later
+          alert("Show component list here"); 
+        }}
+      >
+        Reconcile
       </button>
     </div>
   </div>
 )}
+
 
     </div>
 
