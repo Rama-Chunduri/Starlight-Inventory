@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const API_URL = import.meta.env.VITE_API_URL;
 
 function ActiveBuilds() {
   const location = useLocation();
+  const navigate = useNavigate();
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const [dropdownPos, setDropdownPos] = useState(null); // fixed: was []
