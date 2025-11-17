@@ -12,6 +12,7 @@ function ActiveBuilds() {
   const [reconcileRow, setReconcileRow] = useState(null);
   const [showReconcileModal, setShowReconcileModal] = useState(false);
   const [closingRow, setClosingRow] = useState(null);
+  const partNumberArray = location.state?.partNumberArray || [];
 
   const openReconciliationModal = (row) => {
     setReconcileRow(row);
@@ -249,11 +250,7 @@ const handleOpenFile = () => {
           // TODO: open reconcile UI later
           navigate("/reconcile", {
           state: {
-            unique_id: closingRow.unique_id,
-            components: [
-            ...baseParts,
-            ...buildDynamicParts(Number(closingRow.size)) // or wherever size is stored
-            ]
+            partNumberArray
           }
         });
 

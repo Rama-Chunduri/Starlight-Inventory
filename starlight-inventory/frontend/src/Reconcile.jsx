@@ -5,7 +5,9 @@ const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ReconcilePage() {
   const navigate = useNavigate();
-  const { state } = useLocation();
+  const location = useLocation();
+  const { state } = location;
+  const partNumberArray = location.state?.partNumberArray || [];
 
   const { unique_id, components } = state;
 

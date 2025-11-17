@@ -46,6 +46,7 @@ function LotManagement(){
           type,
           quantity,
           selectedIds,
+          partNumberArray
         },
       });
     }

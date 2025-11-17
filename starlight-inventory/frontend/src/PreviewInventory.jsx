@@ -10,6 +10,7 @@ function PreviewInventory(lot) {
   const type = location.state?.type || "";
   const size = location.state?.size || 0;
   const navigate = useNavigate();
+  const partNumberArray = location.state?.partNumberArray || [];
 
   const [lotPreviewData, setLotPreviewData] = useState([]);
 
@@ -109,7 +110,8 @@ function PreviewInventory(lot) {
           size: String(size),
           type,
           quantity: String(quantity),
-          lotPreviewData
+          lotPreviewData,
+          partNumberArray
         }
       })}} style={buttonStyle}>
         Confirm & Update Inventory

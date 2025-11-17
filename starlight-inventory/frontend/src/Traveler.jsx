@@ -12,6 +12,8 @@ function Traveler(){
   const quantity = location.state?.quantity || "";
   const type = location.state?.type || "";
   const size = location.state?.size || "";
+  const partNumberArray = location.state?.partNumberArray || [];
+
   function getLotNumber(partNumber, lotPreviewData) {
   const lot = lotPreviewData.find(l => l.part_number === partNumber);
   return lot ? lot.receiving_lot_number : "N/A";
@@ -524,7 +526,8 @@ function Traveler(){
                           const file = await generateDoc();
                           navigate("/active-builds", {
                            state: {
-                              file
+                              file,
+                              partNumberArray
                           },
                 });
                 }}
