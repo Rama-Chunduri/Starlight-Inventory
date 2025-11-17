@@ -122,7 +122,7 @@ function StentBOMBuild() {
         <h2 key={p}>{p}</h2>
       ))}
 
-      {/* don’t hardcode .00, just show placeholders */}
+  
       <h2>Stent Assembly (dynamic)</h2>
       <h2>Coated Pusher Tube DDPC32 (dynamic)</h2>
 

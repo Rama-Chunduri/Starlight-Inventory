@@ -246,7 +246,16 @@ const handleOpenFile = () => {
         onClick={() => {
           setShowReconcileModal(false);
           // TODO: open reconcile UI later
-          alert("Show component list here"); 
+          navigate("/reconcile", {
+          state: {
+            unique_id: closingRow.unique_id,
+            components: [
+            ...baseParts,
+            ...buildDynamicParts(Number(closingRow.size)) // or wherever size is stored
+            ]
+          }
+        });
+
         }}
       >
         Reconcile
