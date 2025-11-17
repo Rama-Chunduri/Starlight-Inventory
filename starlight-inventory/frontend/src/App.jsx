@@ -31,7 +31,7 @@ import LowInv from './LowInv'
 import ProtectedRoute from './ProtectedRoute'
 import Traveler from './Traveler'
 import ActiveBuilds from './ActiveBuilds'
-import ReconcilePage from "./pages/ReconcilePage";
+import Reconcile from "./pages/ReconcilePage";
 
 function App() {
   return (
@@ -68,7 +68,7 @@ function App() {
         <Route path="/low-inv" element={<LowInv />} />
         <Route path="/traveler" element={<Traveler />} />
         <Route path="/active-builds" element={<ActiveBuilds />} />
-        <Route path="/reconcile" element={<ReconcilePage />} />
+        <Route path="/reconcile" element={<Reconcile />} />
       </Routes>
     </Router>
   )
