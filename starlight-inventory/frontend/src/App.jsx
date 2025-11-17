@@ -31,7 +31,7 @@ import LowInv from './LowInv'
 import ProtectedRoute from './ProtectedRoute'
 import Traveler from './Traveler'
 import ActiveBuilds from './ActiveBuilds'
-import Reconcile from "./pages/ReconcilePage";
+import Reconcile from "./Reconcile";
 
 function App() {
   return (
