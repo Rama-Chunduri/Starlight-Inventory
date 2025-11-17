@@ -8,6 +8,12 @@ function ActiveBuilds() {
   const [rows, setRows] = useState([]);
   const [columns, setColumns] = useState([]);
   const [dropdownPos, setDropdownPos] = useState(null); // fixed: was []
+  const [reconcileRow, setReconcileRow] = useState(null);
+
+  const openReconciliationModal = (row) => {
+    setReconcileRow(row);
+  };
+
 
   useEffect(() => {
     const fetchData = async () => {
@@ -81,23 +87,41 @@ const handleOpenFile = () => {
 
 
   const handleCloseBuild = async () => {
-    if (!dropdownPos) return;
-    const { rowIdx } = dropdownPos;
-    const row = rows[rowIdx];
+  if (!dropdownPos) return;
+  const { rowIdx } = dropdownPos;
+  const row = rows[rowIdx];
 
+  closeDropdown();
+
+  // Step 1 — Ask the question
+  const needsReconcile = window.confirm(
+    "Do you need to reconcile any components in this build?"
+  );
+
+  if (!needsReconcile) {
+    // Step 2 — user says NO → delete row
     try {
-      const res = await fetch(`${API_URL}/close-build/${row.unique_id}`, {
-        method: "POST",
+      const res = await fetch(`${API_URL}/active-builds-delete-row`, {
+        method: "DELETE",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ unique_id: row.unique_id }),
       });
-      if (!res.ok) throw new Error("Failed to close build");
 
+      if (!res.ok) throw new Error("Failed to delete build");
+
+      // Remove from UI
       setRows((prev) => prev.filter((r) => r.unique_id !== row.unique_id));
     } catch (err) {
-      console.error("Error closing build:", err);
+      console.error("Error deleting build:", err);
     }
 
-    closeDropdown();
-  };
+    return;
+  }
+
+  // Step 3 — user said YES → trigger reconciliation UI
+  openReconciliationModal(row);
+};
+
 
   const handleEditClick = () => {
     if (!dropdownPos) return;
@@ -189,8 +213,40 @@ const handleOpenFile = () => {
           </div>
         </div>
       )}
+      {reconcileRow && (
+  <div
+    style={{
+      position: "fixed",
+      top: 0,
+      left: 0,
+      right: 0,
+      bottom: 0,
+      background: "rgba(0,0,0,0.6)",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      zIndex: 2000
+    }}
+  >
+    <div style={{ background: "white", padding: 20 }}>
+      <h3>Reconcile Components for Build {reconcileRow.unique_id}</h3>
+
+      <p>
+        (Here you would show component list and allow entering +5 / -5 values)
+      </p>
+
+      <button onClick={() => setReconcileRow(null)}>
+        Close
+      </button>
     </div>
+  </div>
+)}
+
+    </div>
+
+    
   );
 }
+
 
 export default ActiveBuilds;
