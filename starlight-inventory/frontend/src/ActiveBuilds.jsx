@@ -250,11 +250,12 @@ const handleOpenFile = () => {
 console.log("Reconcile row:", closingRow);
 
   navigate("/reconcile", {
-    state: {
-      unique_id: closingRow.unique_id,
-      components: closingRow.components
-    }
-  });
+  state: {
+    unique_id: closingRow.unique_id,
+    components: closingRow.components
+  }
+});
+
 }}
 
       >

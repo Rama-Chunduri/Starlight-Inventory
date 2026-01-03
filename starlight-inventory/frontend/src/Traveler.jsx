@@ -494,12 +494,14 @@ function Traveler(){
     window.open(url, "_blank");
      try {
     const res = await fetch(`${API_URL}/add-build`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        file: base64String,
-      }),
-    });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    file: base64String,
+    components: partNumberArray
+  }),
+});
+
 
     if (!res.ok) throw new Error("Failed to save file in DB");
     console.log("File saved to DB");
