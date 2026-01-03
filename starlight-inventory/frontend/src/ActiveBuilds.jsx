@@ -247,6 +247,7 @@ const handleOpenFile = () => {
         }}
         onClick={() => {
   setShowReconcileModal(false);
+console.log("Reconcile row:", closingRow);
 
   navigate("/reconcile", {
     state: {
