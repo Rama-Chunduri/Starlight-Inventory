@@ -246,15 +246,16 @@ const handleOpenFile = () => {
           color: "white"
         }}
         onClick={() => {
-          setShowReconcileModal(false);
-          // TODO: open reconcile UI later
-          navigate("/reconcile", {
-          state: {
-            partNumberArray
-          }
-        });
+  setShowReconcileModal(false);
 
-        }}
+  navigate("/reconcile", {
+    state: {
+      unique_id: closingRow.unique_id,
+      components: closingRow.components
+    }
+  });
+}}
+
       >
         Reconcile
       </button>
