@@ -4,15 +4,16 @@ import { useState } from "react";
 const API_URL = import.meta.env.VITE_API_URL;
 
 export default function ReconcilePage() {
-  const navigate = useNavigate();
   const location = useLocation();
-  const { state } = location;
-  const partNumberArray = location.state?.partNumberArray || [];
+  const navigate = useNavigate();
 
-  const { unique_id, components } = state;
+  // Safely read route state
+  const unique_id = location.state?.unique_id;
+  const components = location.state?.components ?? [];
 
-  const [adjustments, setAdjustments] = useState(
-    Object.fromEntries(components.map(c => [c, 0]))
+  // Initialize adjustments safely
+  const [adjustments, setAdjustments] = useState(() =>
+    Object.fromEntries(components.map(component => [component, 0]))
   );
 
   function updateAdjustment(part, value) {
@@ -23,17 +24,42 @@ export default function ReconcilePage() {
   }
 
   async function submitAdjustments() {
-    await fetch(`${API_URL}/reconcile-build`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        unique_id,
-        adjustments
-      })
-    });
+    try {
+      const response = await fetch(`${API_URL}/reconcile-build`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          unique_id,
+          adjustments
+        })
+      });
 
-    alert("Reconciliation complete.");
-    navigate("/active-builds");
+      if (!response.ok) {
+        throw new Error("Failed to reconcile build");
+      }
+
+      alert("Reconciliation complete.");
+      navigate("/active-builds");
+    } catch (error) {
+      console.error(error);
+      alert("Error submitting reconciliation.");
+    }
+  }
+
+  // Guard against missing state
+  if (!unique_id || components.length === 0) {
+    return (
+      <div style={{ padding: "20px", color: "white" }}>
+        <h2>Error</h2>
+        <p>No build data found. Please return and try again.</p>
+        <button
+          style={{ marginTop: "20px", padding: "10px" }}
+          onClick={() => navigate("/active-builds")}
+        >
+          Go Back
+        </button>
+      </div>
+    );
   }
 
   return (
@@ -44,7 +70,9 @@ export default function ReconcilePage() {
         <thead>
           <tr>
             <th style={{ borderBottom: "1px solid white" }}>Component</th>
-            <th style={{ borderBottom: "1px solid white" }}>Adjustment (+/-)</th>
+            <th style={{ borderBottom: "1px solid white" }}>
+              Adjustment (+ / -)
+            </th>
           </tr>
         </thead>
 
@@ -55,8 +83,9 @@ export default function ReconcilePage() {
               <td>
                 <input
                   type="number"
+                  value={adjustments[part]}
                   style={{ width: "80px" }}
-                  onChange={(e) => updateAdjustment(part, e.target.value)}
+                  onChange={e => updateAdjustment(part, e.target.value)}
                 />
               </td>
             </tr>
@@ -64,7 +93,7 @@ export default function ReconcilePage() {
         </tbody>
       </table>
 
-      <button 
+      <button
         style={{ marginTop: "20px", padding: "10px", width: "200px" }}
         onClick={submitAdjustments}
       >
