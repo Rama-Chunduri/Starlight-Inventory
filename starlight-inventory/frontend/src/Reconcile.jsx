@@ -26,13 +26,13 @@ export default function ReconcilePage() {
   async function submitAdjustments() {
     try {
       const response = await fetch(`${API_URL}/reconcile-build`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          unique_id,
-          adjustments
-        })
-      });
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({
+    unique_id,
+    components: adjustments
+  })
+});
 
       if (!response.ok) {
         throw new Error("Failed to reconcile build");
