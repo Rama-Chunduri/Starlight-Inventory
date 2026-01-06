@@ -1003,6 +1003,90 @@ async def add_data_to_database(build: Build):
 
     return {"status": "success"}
 
+class ReconcileRequest(BaseModel):
+    unique_id: int
+    components: List[str]
+
+@app.post("/reconcile-build")
+async def reconcile_build(data: ReconcileRequest):
+    conn = mysql.connector.connect(
+        host="sql3.freesqldatabase.com",
+        user="sql3793170",
+        password="5iBG4dCytH",
+        database="sql3793170"
+    )
+
+    try:
+        cursor = conn.cursor(dictionary=True)
+
+        # 🔒 START TRANSACTION
+        conn.start_transaction()
+
+        # 1️⃣ Lock the build row
+        #cursor.execute(
+            #"SELECT reconciled FROM active_builds WHERE unique_id = %s FOR UPDATE",
+            #(data.unique_id,)
+        #)
+        build = cursor.fetchone()
+
+        #if not build:
+            #raise HTTPException(status_code=404, detail="Build not found")
+
+        #if build["reconciled"]:
+            #raise HTTPException(status_code=400, detail="Build already reconciled")
+
+        # 2️⃣ Check inventory availability
+        for part in data.components:
+            cursor.execute(
+                "SELECT quantity FROM stent_lot_management_table WHERE part_number = %s FOR UPDATE",
+                (part,)
+            )
+            row = cursor.fetchone()
+
+            if not row:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Missing inventory for part {part}"
+                )
+
+            if row["quantity"] < 1:
+                raise HTTPException(
+                    status_code=400,
+                    detail=f"Insufficient inventory for part {part}"
+                )
+
+        # 3️⃣ Deduct inventory
+        for part in data.components:
+            cursor.execute(
+                """
+                UPDATE stent_lot_management_table
+                SET quantity = quantity - 1
+                WHERE part_number = %s
+                """,
+                (part,)
+            )
+
+
+        conn.commit()
+
+        return {
+            "status": "success",
+            "build_id": data.unique_id,
+            "components_reconciled": len(data.components)
+        }
+
+    except HTTPException:
+        conn.rollback()
+        raise
+
+    except Exception as e:
+        conn.rollback()
+        raise HTTPException(status_code=500, detail=str(e))
+
+    finally:
+        cursor.close()
+        conn.close()
+
 if __name__ == "__main__":
     import uvicorn
     uvicorn.run("main:app", port=8000, reload=True)
