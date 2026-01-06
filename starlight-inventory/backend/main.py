@@ -180,19 +180,31 @@ def get_implant_inventory():
     return rows
 
 @app.get("/active-builds")
-def get_implant_inventory():
+async def get_active_builds():
     conn = mysql.connector.connect(
-           host = "sql3.freesqldatabase.com",
-           user = "sql3793170",
-           password = "5iBG4dCytH",
-           database = "sql3793170"
-       )
+        host="sql3.freesqldatabase.com",
+        user="sql3793170",
+        password="5iBG4dCytH",
+        database="sql3793170"
+    )
     cursor = conn.cursor(dictionary=True)
-    sql = "SELECT * FROM active_builds"
-    cursor.execute(sql)
+
+    cursor.execute("SELECT unique_id, file, components FROM active_builds")
     rows = cursor.fetchall()
+
     cursor.close()
     conn.close()
+
+    # 🔑 THIS IS THE MISSING PIECE
+    for row in rows:
+        if row["components"]:
+            try:
+                row["components"] = json.loads(row["components"])
+            except Exception:
+                row["components"] = []
+        else:
+            row["components"] = []
+
     return rows
 
 
