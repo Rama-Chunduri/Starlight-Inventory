@@ -22,16 +22,16 @@ export default function ReconcilePage() {
       [part]: Number(value)
     }));
   }
-
+  const componentsToReconcile = Object.keys(adjustments)
   async function submitAdjustments() {
     try {
       const response = await fetch(`${API_URL}/reconcile-build`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    unique_id: Number(unique_id),
-    components: adjustments
-  })
+body: JSON.stringify({
+  unique_id: Number(unique_id),
+  components: componentsToReconcile
+})
 });
 
       if (!response.ok) {
