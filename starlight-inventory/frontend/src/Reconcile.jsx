@@ -29,7 +29,7 @@ export default function ReconcilePage() {
   method: "POST",
   headers: { "Content-Type": "application/json" },
   body: JSON.stringify({
-    unique_id,
+    unique_id: Number(unique_id),
     components: adjustments
   })
 });
