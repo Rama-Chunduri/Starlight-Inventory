@@ -1027,7 +1027,7 @@ async def reconcile_build(data: ReconcileRequest):
             #"SELECT reconciled FROM active_builds WHERE unique_id = %s FOR UPDATE",
             #(data.unique_id,)
         #)
-        build = cursor.fetchone()
+        #build = cursor.fetchone()
 
         #if not build:
             #raise HTTPException(status_code=404, detail="Build not found")
