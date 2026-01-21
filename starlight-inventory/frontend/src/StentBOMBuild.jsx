@@ -9,7 +9,7 @@ function StentBOMBuild() {
   const navigate = useNavigate();
 
   const baseParts = [
-    "STR-DA2-CA-10001",
+    "STR-DA2-CA-10031",
     "MS-00-50002",
     "MS-DA2-50002",
     "MS-DA2-50003",

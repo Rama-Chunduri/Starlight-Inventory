@@ -118,7 +118,7 @@ function Traveler(){
 
     
     const lot_no_1 = getLotNumber("MS-00-50002", lotPreviewData)
-    const lot_no_2 = getLotNumber("STR-DA2-CA-10001", lotPreviewData)
+    const lot_no_2 = getLotNumber("STR-DA2-CA-10031", lotPreviewData)
     const lot_no_3 = getLotNumber("MS-DA2-50002", lotPreviewData)
     const lot_no_4 = getLotNumber("MS-DA2-50003", lotPreviewData)
     const lot_no_5 = getLotNumber("MS-00-50003", lotPreviewData)
